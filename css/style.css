@@ -1,0 +1,108 @@
+* {
+  margin: 0;
+  padding: 0;
+  border: none; }
+
+:root {
+  font-size: 10px; }
+
+
+/*** div droite : contient header et résultats de recherche ***/
+  #droite {
+    width: 65%;
+  }
+
+
+/*** Header ***/
+
+  header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+        h1 {
+          font-family: 'im_fell_english_proitalic';
+          font-size: 4em;
+        }
+
+        /* ------------------ */
+        /* -- -- frises -- -- */
+        /* ------------------ */
+        #chronoScreen, #friseCat, #chronoMobile {
+          width: 100%;
+          height: auto;
+        }
+        #romain, #prehistoire, #moderne {
+          fill:#c64c4e;
+        }
+        #contemporain, #moyen, #protohistoire {
+          fill:#901826;
+        }
+        #chronoScreen path:hover {
+          fill:#fd7c7a;
+          transition: all ease 0.3s;
+        }
+        #friseCat path:hover, .temple:hover {
+          fill:#901826;
+          transition: all ease 0.3s;
+        }
+        #trait {
+          stroke: #000;
+        }
+
+main {
+  display: flex;
+  width: 100%;
+  height: 80em; }
+
+/*** Select ***/
+#select {
+  width: 30%; }
+
+/*** Select ***/
+#listMonuments {
+  width: 60%; }
+
+
+/* ------------------ */
+/* --  Formulaire  -- */
+/* ------------------ */
+
+/*** Champ de recherche ***/
+input[type='search'] {
+  border-bottom: 1px solid grey;
+  width: 60%;
+  margin-left: 10%;
+  height: 3em;
+  background: none;
+  font-size: 2em;
+}
+
+/*** Bouton submit ***/
+input[type='submit'] {
+  width: 3em;
+  color: transparent;
+  background-color: transparent;
+  background-image: url('../img/logoMH.svg');
+  background-size: contain;
+    height: 3em;
+}
+input[type='submit']:hover {
+  cursor: pointer;
+}
+
+/*** Boutons radio ***/
+#radio {
+  margin-left: 10%;
+}
+input[type='radio'] {
+  line-height: 2em;
+  /* margin-top: -1px; */
+  vertical-align: middle;
+}
+label {
+  font-size: 1.2em;
+  color: grey;
+}

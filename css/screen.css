@@ -1,0 +1,55 @@
+body {
+  margin-top: 1em;
+}
+
+
+#fenetre {
+  width: 20em;
+  height: 10em;
+  position: relative;
+  overflow: hidden;
+  /* border: 1px solid grey; */
+}
+iframe {
+  width: 50em;
+  height: 30em;
+}
+
+
+
+/* Contemporain */
+#a6 {
+    font-family: 'rieslingregular';
+    font-size: 2em;
+}
+/* Temps modernes */
+#a5 {
+    /* font-family: 'Poiret One', cursive; 'Parisienne', cursive;*/
+    font-family: 'shangrilanregular';
+    /* font-family: 'im_fell_english_proitalic'; */
+    /* font-family: 'EB Garamond', serif; */
+    font-size: 2em;
+}
+/* Moyen-âge */
+#a4 {
+      font-family: 'kingthings_italiqueregular';
+      /* font-family: 'genzsch_et_heyse_alternateRg'; */
+      /* font-family: 'New Rocker', cursive; */
+      /* font-family: 'teutonic_no2demibold'; */
+      font-size: 2em;
+}
+/* Gallo-romain */
+#a3 {
+      font-family: 'Caesar Dressing', cursive;
+      font-size: 2em;
+}
+/* Protohistoire */
+#a2 {
+      font-family: 'dj_grossnormal';
+      font-size: 40px;
+}
+/* Préhistoire */
+#a1 {
+    font-family: 'eraserregular';
+    font-size: 2em;
+}

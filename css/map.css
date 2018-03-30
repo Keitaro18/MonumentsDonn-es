@@ -1,0 +1,12 @@
+.map {
+  width: 100%; }
+
+#France path {
+  fill: #dfffff;
+  transition: 0.2s; }
+
+#France path:hover {
+  fill: #901826;
+  cursor: pointer; }
+
+/*# sourceMappingURL=map.css.map */
