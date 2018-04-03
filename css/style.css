@@ -95,8 +95,18 @@ body {
             }
 
 /*** Select ***/
-#select {
+aside {
   margin-top: 1em;
+  position: relative;
+}
+
+#dep {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 10%;
+  left: 50%;
+  text-align: center;
+  font-size: 1.5em;
 }
 
 main {
@@ -146,13 +156,16 @@ label {
   color: grey;
 }
 
+  svg {
+    cursor: pointer;
+  }
 
   #legendes {
     margin-top: -3.55vw;
     width: 100%;
     display: flex;
     height: 3.6vw;
-    
+
     pointer-events: none;
     /* Permet de "cliquer à travers" :
     on ignore cette couche pour les événements souris */

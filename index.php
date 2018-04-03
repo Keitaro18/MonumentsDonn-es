@@ -11,8 +11,9 @@
   <link rel="stylesheet" href="css/map.css">
   <link rel="stylesheet" href="css/fonts.css">
   <link href="https://fonts.googleapis.com/css?family=Redressed" rel="stylesheet">
-  <!-- <script type="text/javascript" src="js/script.js" async></script> -->
-  <title>Monuments historiques</title>
+  <title>Monuments d'ici et d'hier</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" async></script>
+  <script type="text/javascript" src="js/script.js" async></script>
 </head>
 <body>
 
@@ -30,7 +31,8 @@
   </header>
 
    <aside id="select">
-         <div class="map">
+         <p id="dep">France</p>
+         <div id="map">
            <?php include "img/map.svg"; ?>
          </div>
          <form action="php/class.php" method="post" target="result">
@@ -47,9 +49,6 @@
          </form>
     </aside>
 
-
-  <div id="droite">
-
     <main id="fenetre">
       <iframe name="result"></iframe>
       <div id = "listMonuments">
@@ -57,7 +56,6 @@
       </div>
     </main>
 
-  </div>
   <?php
       // $search = "<br>http://www.wikipedia.org/search-redirect.php?language=fr&search=" . $_POST['search'];
       // echo $search;
