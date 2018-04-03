@@ -1,17 +1,16 @@
 * {
   margin: 0;
   padding: 0;
-  border: none; }
+  border: none;
+}
 
 :root {
-  font-size: 10px; }
+  font-size: 10px;
+}
 
-
-/*** div droite : contient header et résultats de recherche ***/
-  #droite {
-    width: 65%;
-  }
-
+body {
+  margin-top: 1em;
+}
 
 /*** Header ***/
 
@@ -20,50 +19,90 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 100%;
   }
 
         h1 {
           font-family: 'im_fell_english_proitalic';
-          font-size: 4em;
         }
 
         /* ------------------ */
         /* -- -- frises -- -- */
         /* ------------------ */
-        #chronoScreen, #friseCat, #chronoMobile {
+        #chrono {
+          width: 100%;
+        }
+        .texte {
+          fill: #fff;
+        }
+        #chronoFrise, #friseCat {
           width: 100%;
           height: auto;
         }
+        #friseCat {
+          -webkit-animation: noir 3s;  /* Safari 4.0 - 8.0 */
+          animation: noir 3s;
+        }
         #romain, #prehistoire, #moderne {
           fill:#c64c4e;
+          -webkit-animation: rose 3s;  /* Safari 4.0 - 8.0 */
+          animation: rose 3s;
         }
-        #contemporain, #moyen, #protohistoire {
+        #contemporain, #moyen, #protohistoire, .texte {
           fill:#901826;
+          -webkit-animation: rouge 3s;  /* Safari 4.0 - 8.0 */
+          animation: rouge 3s;
         }
-        #chronoScreen path:hover {
-          fill:#fd7c7a;
-          transition: all ease 0.3s;
-        }
-        #friseCat path:hover, .temple:hover {
-          fill:#901826;
-          transition: all ease 0.3s;
-        }
+              #chronoFrise path:hover {
+                fill:#fd7c7a;
+              }
+              #friseCat path:hover, .temple:hover {
+                fill:#901826;
+              }
         #trait {
           stroke: #000;
         }
+
+            @-webkit-keyframes rouge {
+                0% {fill:#7D9EA5;}
+                60% {fill:#c64c4e;}
+                100% {fill:#901826;}
+            }
+            @keyframes rouge {
+                0% {fill:#7D9EA5;}
+                60% {fill:#c64c4e;}
+                100% {fill:#901826;}
+            }
+
+            @-webkit-keyframes rose {
+                0%, 100% {fill:#c64c4e;}
+                30% {fill:#7D9EA5;}
+                60% {fill:#901826;}
+            }
+            @keyframes rose {
+                0%, 100% {fill:#c64c4e;}
+                30% {fill:#7D9EA5;}
+                60% {fill:#901826;}
+            }
+
+            @-webkit-keyframes noir {
+                0%, 50%, 100% {fill:#000;}
+                25%, 75% {fill:#901826;}
+            }
+            @keyframes noir {
+                0%, 20%, 40%, 60%, 100% {fill:#000;}
+                10%, 30%, 50%, 70%, 90% {fill:#901826;}
+            }
+
+/*** Select ***/
+#select {
+  margin-top: 1em;
+}
 
 main {
   display: flex;
   width: 100%;
   height: 80em; }
-
-/*** Select ***/
-#select {
-  width: 30%; }
-
-/*** Select ***/
-#listMonuments {
-  width: 60%; }
 
 
 /* ------------------ */
@@ -106,3 +145,65 @@ label {
   font-size: 1.2em;
   color: grey;
 }
+
+
+  #legendes {
+    margin-top: -3.55vw;
+    width: 100%;
+    display: flex;
+    height: 3.6vw;
+    
+    pointer-events: none;
+    /* Permet de "cliquer à travers" :
+    on ignore cette couche pour les événements souris */
+  }
+
+  span {
+    text-align: center;
+    color: #fff;
+  }
+
+  /* Préhistoire */
+  #pre {
+      font-family: 'eraserregular';
+      width: 25vw;
+      line-height: 3.6vw;
+      font-size: 2.8vw;
+      margin-left: 2.3vw;
+  }
+
+  /* Protohistoire */
+  #proto {
+      font-family: 'dj_grossnormal';
+      width: 8.2vw;
+      line-height: 1.8vw;
+      font-size: 1.3vw;
+      margin-left: 2.3vw;
+  }
+
+  /* Gallo-romain */
+  #anti {
+      font-family: 'Caesar Dressing', cursive;
+      width: 11vw;
+      line-height: 3.6vw;
+      font-size: 2.8vw;
+      margin-left: 1.6vw;
+  }
+
+  /* Moyen-âge */
+  #m-age {
+      font-family: 'kingthings_italiqueregular';
+      width: 27.5vw;
+      line-height: 3.6vw;
+      font-size: 3.4vw;
+      margin-left: 2.7vw;
+  }
+
+  /* Temps modernes */
+  #temps {
+      font-family: 'shangrilanregular';
+      width: 8.2vw;
+      line-height: 1.8vw;
+      font-size: 2.6vw;
+      margin-left: 2.5vw;
+  }

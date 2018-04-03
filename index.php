@@ -4,49 +4,58 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="icon" type="image/png" href="img/monu_hist.ico">
+  <link rel="icon" type="image/ico" href="img/monu_hist.ico">
   <link rel="stylesheet" media="screen and (min-width: 781px)" href="css/screen.css">
   <link rel="stylesheet" media="screen and (max-width: 780px)" href="css/phone.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/map.css">
   <link rel="stylesheet" href="css/fonts.css">
   <link href="https://fonts.googleapis.com/css?family=Redressed" rel="stylesheet">
+  <!-- <script type="text/javascript" src="js/script.js" async></script> -->
   <title>Monuments historiques</title>
 </head>
 <body>
 
- <main>
-   <div id="select">
+  <header>
+        <h1>Monuments d'ici et d'hier</h1>
+        <?php include_once 'img/chrono.svg'; ?>
+        <div id="legendes">
+              <span id="pre">Prehistoire</span>
+              <span id="proto">Proto <small>histoire</small></span>
+              <span id="anti">Antiquité</span>
+              <span id="m-age">Moyen-Age</span>
+              <span id="temps">Temps modernes</span>
+        </div>
+        <?php include_once "img/friseCat.svg"; ?>
+  </header>
 
+   <aside id="select">
          <div class="map">
-           <?php
-              include "img/map.svg";
-           ?>
+           <?php include "img/map.svg"; ?>
          </div>
-
-     </div>
+         <form action="php/class.php" method="post" target="result">
+           <input type="search" name="search" placeholder="Chercher" autofocus/>
+           <input type="submit" name="go" value="Go!" />
+           <div id="radio">
+             <label for="commune">par commune</label>
+             <input type="radio" name="type" value="commune" id="commune" checked>
+             <label for="epoque">par époque</label>
+             <input type="radio" name="type" value="époque" id="epoque">
+             <label for="nom">par nom</label>
+             <input type="radio" name="type" value="nom" id="nom">
+           </div>
+         </form>
+    </aside>
 
 
   <div id="droite">
 
-   <header>
-     <h1>Monuments d'ici et d'hier</h1>
-     <?php
-       include "img/chronoScreen.svg";
-       // include "img/chronoMobile.html";
-      ?>
-      <?php
-        include "img/friseCat.svg";
-        // include "img/chronoMobile.html";
-       ?>
-  </header>
-
-  <div id="fenetre">
-    <iframe name="result"></iframe>
-    <div id = "listMonuments">
-      <!-- Liste des monuments issus de la recherche -->
-    </div>
-  </div>
+    <main id="fenetre">
+      <iframe name="result"></iframe>
+      <div id = "listMonuments">
+        <!-- Liste des monuments issus de la recherche -->
+      </div>
+    </main>
 
   </div>
   <?php
