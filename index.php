@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" async></script>
+    <script src="js/ajax.js" async></script>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/map.css">
     <title>Monuments d'ici et d'ailleurs</title>
@@ -15,11 +16,11 @@
     </header>
 
     <main>
-        <div id = "select">
+        <div id="select">
 
-            <div class="map">
+            <div id="map">
             <?php 
-            include "css/map.html";
+            include "css/dep/map.svg";
             ?>
             </div>
 
