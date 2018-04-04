@@ -31,7 +31,7 @@
   </header>
 
    <aside id="select">
-         <p id="dep">France</p>
+         <p id="dep"></p>
          <div id="map">
            <?php include "img/map.svg"; ?>
          </div>
