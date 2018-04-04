@@ -56,7 +56,7 @@ body {
               #chronoFrise path:hover {
                 fill:#fd7c7a;
               }
-              #friseCat path:hover, .temple:hover {
+              #friseCat a:hover, path:hover, .temple:hover {
                 fill:#901826;
               }
         #trait {
@@ -107,6 +107,10 @@ aside {
   left: 50%;
   text-align: center;
   font-size: 1.5em;
+  border: 1px solid #901826;
+  background-color: #dfffff;
+  padding: 0 3px;
+  
 }
 
 main {

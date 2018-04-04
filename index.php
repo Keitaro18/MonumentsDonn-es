@@ -12,8 +12,9 @@
   <link rel="stylesheet" href="css/fonts.css">
   <link href="https://fonts.googleapis.com/css?family=Redressed" rel="stylesheet">
   <title>Monuments d'ici et d'hier</title>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" async></script>
   <script type="text/javascript" src="js/script.js" async></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" defer></script>
+  <script type="text/javascript" src="js/jquery.js" defer></script>
 </head>
 <body>
 
@@ -63,6 +64,7 @@
       // echo $search;
   ?>
 </main>
+
 
 </body>
 </html>

@@ -10,9 +10,7 @@
 
 #map path:hover {
   fill: #901826;
-  cursor: pointer;
+  cursor: zoom-in;
   stroke: #000000;
   stroke-width: 1.5;
 }
-
-/*# sourceMappingURL=map.css.map */
