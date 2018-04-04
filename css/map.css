@@ -1,5 +1,8 @@
 #map {
-  width: 100%; }
+  width: 100%;
+  transition: 1s;
+  -webkit-transition: 1s;
+}
 
 #map path {
   fill: #dfffff;

@@ -100,7 +100,7 @@ aside {
   position: relative;
 }
 
-#dep {
+#dep, #reg {
   position: absolute;
   transform: translate(-50%, -50%);
   top: 10%;
@@ -110,7 +110,7 @@ aside {
   border: 1px solid #901826;
   background-color: #dfffff;
   padding: 0 3px;
-  
+  pointer-events: none;
 }
 
 main {
@@ -118,6 +118,42 @@ main {
   width: 100%;
   height: 80em; }
 
+  /*** Select ***/
+
+  #listMonuments {
+    width: 100%;
+    padding: 1vw;
+    font-size: 1vw;
+    font-family: 'Bonveno', 'Raleway';
+  }
+
+  .ligne {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    line-height: 2vw;
+  }
+
+  .ligne:nth-child(even) {
+    background-color: #dfffff;
+  }
+
+  .ligne p:nth-child(even) {
+    font-size: 0.9vw;
+    flex:1;
+  }
+
+  .ligne p:nth-child(odd) {
+    flex:2;
+  }
+
+  #suivant {
+    padding: 3px 1vw;
+    width: 5vw;
+    line-height: 1vw;
+    margin: 1vw 40%;
+    background-color: #7D9EA5;
+  }
 
 /* ------------------ */
 /* --  Formulaire  -- */
@@ -128,19 +164,19 @@ input[type='search'] {
   border-bottom: 1px solid grey;
   width: 60%;
   margin-left: 10%;
-  height: 3em;
+  height: 2vw;
   background: none;
-  font-size: 2em;
+  font-size: 1.8vw;
 }
 
 /*** Bouton submit ***/
 input[type='submit'] {
-  width: 3em;
+  width: 2vw;
   color: transparent;
   background-color: transparent;
   background-image: url('../img/logoMH.svg');
   background-size: contain;
-    height: 3em;
+    height: 2vw;
 }
 input[type='submit']:hover {
   cursor: pointer;
@@ -151,12 +187,12 @@ input[type='submit']:hover {
   margin-left: 10%;
 }
 input[type='radio'] {
-  line-height: 2em;
+  line-height: 1.8vw;
   /* margin-top: -1px; */
   vertical-align: middle;
 }
 label {
-  font-size: 1.2em;
+  font-size: 1vw;
   color: grey;
 }
 
@@ -175,7 +211,7 @@ label {
     on ignore cette couche pour les événements souris */
   }
 
-  span {
+  header span {
     text-align: center;
     color: #fff;
   }

@@ -1,4 +1,4 @@
-/* H1 & TEMPS MODERNES */
+/* H1 */
 @font-face {
     font-family: 'im_fell_english_proitalic';
     src: url('../fonts/FeENit27C-webfont.eot');
@@ -46,6 +46,28 @@
     src: url('../fonts/SHANLN__-webfont.eot');
     src: url('../fonts/SHANLN__-webfont.eot?#iefix') format('embedded-opentype'),
          url('../fonts/SHANLN__-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* CONTEMPORAIN */
+@font-face {
+    font-family: 'riesling';
+    src: url('../fonts/riesling-webfont.eot');
+    src: url('../fonts/riesling-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/riesling-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* LISTE */
+
+@font-face {
+    font-family: 'Bonveno';
+    src: url('../fonts/BonvenoCF-Light-webfont.eot');
+    src: url('../fonts/BonvenoCF-Light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/BonvenoCF-Light-webfont.woff') format('woff'),
+         url('../fonts/BonvenoCF-Light-webfont.woff') format('woff2');
     font-weight: normal;
     font-style: normal;
 }
