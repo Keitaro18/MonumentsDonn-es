@@ -1,4 +1,12 @@
 <svg version="1.1" viewBox="-10 -10 580 580">
+ <a xlink:title="Retour à la carte de le France" onclick="showMap('France')">
+     <rect
+     id="fond"
+     width="580"
+     height="580"
+     x="-10"
+     y="-10" />
+     </a>
     
         <a xlink:title="Vendée">
     <path
