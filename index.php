@@ -29,12 +29,13 @@
               <span id="temps">Temps modernes</span>
         </div>
         <?php include_once "img/friseCat.svg"; ?>
+        <p id="etiquet-frises"></p>
   </header>
 
   <main>
    <aside id="select" hidden>
-         <p id="reg" hidden>France</p>
-         <p id="dep"></p>
+         <p id="etiquet-fix" hidden>France</p>
+         <p id="etiquet-var" hidden></p>
          <div id="map" >
            <?php include "img/map.svg"; ?>
          </div>

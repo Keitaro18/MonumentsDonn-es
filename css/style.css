@@ -43,12 +43,12 @@ body {
           -webkit-animation: noir 3s;  /* Safari 4.0 - 8.0 */
           animation: noir 3s;
         }
-        #romain, #prehistoire, #moderne {
+        .rose {
           fill:#c64c4e;
           -webkit-animation: rose 3s;  /* Safari 4.0 - 8.0 */
           animation: rose 3s;
         }
-        #contemporain, #moyen, #protohistoire, .texte {
+        .rouge, .texte {
           fill:#901826;
           -webkit-animation: rouge 3s;  /* Safari 4.0 - 8.0 */
           animation: rouge 3s;
@@ -61,6 +61,11 @@ body {
               }
         #trait {
           stroke: #000;
+          pointer-events: none;
+        }
+
+        #frise {
+          font-size: 1vw;
         }
 
             @-webkit-keyframes rouge {
@@ -94,29 +99,12 @@ body {
                 10%, 30%, 50%, 70%, 90% {fill:#901826;}
             }
 
-/*** Select ***/
-aside {
-  margin-top: 1em;
-  position: relative;
-}
-
-#dep, #reg {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  top: 10%;
-  left: 50%;
-  text-align: center;
-  font-size: 1.5em;
-  border: 1px solid #901826;
-  background-color: #dfffff;
-  padding: 0 3px;
-  pointer-events: none;
-}
-
 main {
   display: flex;
+  margin-top: -1vw;
   width: 100%;
-  height: 80em; }
+  height: 40vw;
+  overflow: hidden;}
 
   /*** Select ***/
 
@@ -155,50 +143,14 @@ main {
     background-color: #7D9EA5;
   }
 
-/* ------------------ */
-/* --  Formulaire  -- */
-/* ------------------ */
 
-/*** Champ de recherche ***/
-input[type='search'] {
-  border-bottom: 1px solid grey;
-  width: 60%;
-  margin-left: 10%;
-  height: 2vw;
-  background: none;
-  font-size: 1.8vw;
-}
-
-/*** Bouton submit ***/
-input[type='submit'] {
-  width: 2vw;
-  color: transparent;
-  background-color: transparent;
-  background-image: url('../img/logoMH.svg');
-  background-size: contain;
-    height: 2vw;
-}
-input[type='submit']:hover {
-  cursor: pointer;
-}
-
-/*** Boutons radio ***/
-#radio {
-  margin-left: 10%;
-}
-input[type='radio'] {
-  line-height: 1.8vw;
-  /* margin-top: -1px; */
-  vertical-align: middle;
-}
-label {
-  font-size: 1vw;
-  color: grey;
-}
-
-  svg {
+  #chronofrise, #friseCat {
     cursor: pointer;
   }
+
+
+/* ---- ----- Légendes des époques ---- ----- */
+/* ------- texte blanc sur chronoFrise ------ */
 
   #legendes {
     margin-top: -3.55vw;
@@ -260,3 +212,20 @@ label {
       font-size: 2.6vw;
       margin-left: 2.5vw;
   }
+
+#etiquet-frises {
+    height: 1vw;
+    width: 100%;
+    font-size: 1vw;
+    text-align: center;
+    baseline: 100%;
+}
+
+.coche {
+  fill: #7D9EA5;
+}
+
+[id^=path] {
+  /* empêcher les événements souris sur les "pointillés" de préhistoire et protohistoire */
+  pointer-events: none;
+}

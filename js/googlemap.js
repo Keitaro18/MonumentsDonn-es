@@ -1,4 +1,22 @@
-<script src='//maps.google.com/maps/api/js?sensor=false'>
+// GEOLOCALISATION //
+
+var x = document.getElementById("demo");
+function getLocation() {
+	 if (navigator.geolocation) {
+			 navigator.geolocation.getCurrentPosition(showPosition);
+	 } else {
+			 x.innerHTML = "Geolocation is not supported by this browser.";
+	 }
+}
+function showPosition(position) {
+	 x.innerHTML = "Latitude: " + position.coords.latitude +
+	 "<br>Longitude: " + position.coords.longitude;
+}
+
+
+// GOOGLE MAP
+
+// <script src='//maps.google.com/maps/api/js?sensor=false'>
 var infowindow = new google.maps.InfoWindow();
 				var markersmap  = [];
 
@@ -79,7 +97,7 @@ markersmap.push(createMarker(mapmap, point,"Reposoir du 17e siècle","<h3>Reposo
 						if(sidebar!=null && sidebar!=undefined && title!=null && title!=''){
 							var newlink = document.createElement('a');
 
-			        		newlink.onclick=function(){infowindow.open(map,new_marker); return false};
+			        		newlink.onclick=function(){infowindow.open(map,new_marker); return false;};
 
 							newlink.innerHTML = title;
 							sidebar.appendChild(newlink);
@@ -105,7 +123,6 @@ function isEmpty(obj) { for(var i in obj) { return false; } return true; }
 		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	  })();
 
-	</script> <script language="JavaScript">
 
 		var height = (document.documentElement && document.documentElement.clientHeight) || window.innerHeight || self.innerHeight || document.body.clientHeight ;
 		var today = new Date(), expires = new Date();

@@ -57,7 +57,8 @@ function showMap(lieu) {
     case "France":
       $('#map').load('img/map.svg')
       niveau = 0;
-      $('#dep').text('')
+      lieu = ''
+      $('#etiquet-fix').hide()
       break;
     default:
       niveau = 2;
