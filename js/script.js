@@ -4,61 +4,62 @@ function showMap(lieu) {
 
     case "Bretagne":
       $('#map').load('img/dep/bretagne.svg')
-      // $('#dep').text('Bretagne')
+      niveau = 1;
       break;
     case "Pays-de-la-Loire":
       $('#map').load('img/dep/payloire.svg')
-      // $('#dep').text('Pays de la Loire')
+      niveau = 1;
       break;
     case "Ile-de-France":
       $('#map').load('img/dep/iledef.svg')
-      // $('#dep').text('Ile de France')
+      niveau = 1;
       break;
     case "Provence-Alpes-Cote-dAzur":
       $('#map').load('img/dep/provence.svg')
-      // $('#dep').text('Provence-Alpes-Côte d\'Azur')
+      niveau = 1;
       break;
     case "Corse":
       $('#map').load('img/dep/corse.svg')
-      // $('#dep').text('Corse')
+      niveau = 1;
       break;
     case "Normandie":
       $('#map').load('img/dep/normandie.svg')
-      // $('#dep').text('Normandie')
+      niveau = 1;
       break;
     case "Hauts-de-France":
       $('#map').load('img/dep/hautdef.svg')
-      // $('#dep').text('Hauts-de-France')
+      niveau = 1;
       break;
     case "Grand-Est":
       $('#map').load('img/dep/grandest.svg')
-      // $('#dep').text('Grand Est')
+      niveau = 1;
       break;
     case "Occitanie":
       $('#map').load('img/dep/occitanie.svg')
-      // $('#dep').text('Occitanie')
+      niveau = 1;
       break;
     case "Auvergne":
       $('#map').load('img/dep/auvergne.svg')
-      // $('#dep').text('Auvergne-Rhône-Alpes')
+      niveau = 1;
       break;
     case "Centre-Val-de-Loire":
       $('#map').load('img/dep/centre.svg')
-      // $('#dep').text('Centre-Val de Loire')
+      niveau = 1;
       break;
     case "Nouvelle-Aquitaine":
       $('#map').load('img/dep/nouvelleaqui.svg')
-      // $('#dep').text('Nouvelle Aquitaine')
+      niveau = 1;
       break;
     case "Bourgogne-Franche-Comte":
       $('#map').load('img/dep/bourgogne.svg')
-      // $('#dep').text('Bourgogne-Franche-Comté')
+      niveau = 1;
       break;
     case "France":
       $('#map').load('img/map.svg')
       niveau = 0;
-      // $('#dep').text('')
+      $('#dep').text('')
       break;
-
+    default:
+      niveau = 2;
   }
 }

@@ -1,8 +1,9 @@
 #map {
   width: 100%;
-  transition: 1s;
-  -webkit-transition: 1s;
-}
+    border: solid 1px black;
+    cursor: pointer;
+    transition: 1s;
+    -webkit-transition: 1s; }
 
 #map path {
   fill: #dfffff;
