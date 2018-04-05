@@ -1,7 +1,7 @@
 #map {
   width: 100%;
   margin: 1vw;
-  box-shadow: 2px 1px 5px grey;
+  box-shadow: 2px 1px 5px #7D9EA5;
   transition: 1s;
   -webkit-transition: 1s; }
 
@@ -20,6 +20,13 @@
   stroke-width: 1.5;
 }
 
+.depRose {
+  fill:#c64c4e;
+  stroke: #901826;
+}
+.depRouge {
+  fill: #901826;
+}
 /* ----- TRANSFORMATION DU CURSEUR ----- */
 /* Donne des indications à l'utilisateur */
 
@@ -48,6 +55,9 @@ aside {
   position: relative;
 }
 
+[id^=etiquet] {
+  font-family: 'Raleway';
+}
 #etiquet-var, #etiquet-fix {
   position: absolute;
   border: 1px solid #901826;

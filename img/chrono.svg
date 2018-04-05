@@ -22,13 +22,13 @@
     id="layer1">
     <g id="matrix" transform="matrix(1,0,0,0.64285714,0,85.769689)">
       <a xlink:title="45000aJC <paléolithique> 10000aJC <mésolithique> 5000aJC" id="prehistoire" class="rose">
-        <path id="path1_1" name="Prehistoire"
+        <path id="path1_1" name="Préhistoire"
         style="opacity:1;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:30;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1"
         d="m -227.30884,220.15513 2.97078,0 10.88945,10 -10.88945,10 -2.97078,0 10.88945,-10 z" />
-        <path id="path1_2" name="Prehistoire"
+        <path id="path1_2" name="Préhistoire"
         style="opacity:1;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:30;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1"
         d="m -221.20352,220.15513 2.97078,0 10.88945,10 -10.88945,10 -2.97078,0 10.88945,-10 z" />
-        <path id="1" name="Prehistoire"
+        <path id="1" name="Préhistoire"
         style="opacity:1;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:30;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10;stroke-opacity:1"
         d="m -215.09821,220.15513 76.26737,0 10.88945,10 -10.88945,10 -76.26737,0 10.88945,-10 z" />
       </a>

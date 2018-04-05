@@ -1,5 +1,10 @@
+// Initialisation JQuery
 $(document).ready(function() {
-////// Paramètres de la fonction ajax pour la requête SQL //////
+
+//////// //////// //////// //////// //////// //////// //////// ////////
+///// PARAMETRES A ENVOYER AU FICHIER PHP grâce à la requête AJAX /////
+//\\\\\\ \\\\\\\\ \\\\\\\\ \\\\\\\\ \\\\\\\\ \\\\\\\\ \\\\\\\\ \\\\\\\\
+
     // lorsqu'on clique sur la carte
     var lieu = '';
     // lorsqu'on clique sur une époque dans la frise chronologique
@@ -10,59 +15,88 @@ $(document).ready(function() {
     var type = '';
     // on sait quoi chercher avec le contenu du champ de recherche
     var recherche = '';
-    // lorsqu'on appuie sur suivant, on veut la suite de la liste des monuments
+    // si on considère qu'une requête ramène de quoi remplir une page de résultat, offset correspond à son numéro
     var offset = 0;
+
 
 ////// Pour traitement JS uniquement //////
     var nom_epoque = '';
 
+
+
+//////// //////// //////// //////// /////////
+////////////////   CARTE  \\\\\\\\\\\\\\\\\\\
+//\\\\\\ \\\\\\\\ \\\\\\\\ \\\\\\\\ \\\\\\\\\
+
+// Affichage : un délai évite le chargement d'une carte géante et noire avant application du CSS //
     $('aside').fadeIn(1000);
 
+// Affichage d'une étiquette informative mobile au survol //
     $('#map').on('mouseover','path',function(e){
-      // Ici on veut que l'étiquette "suive la souris", on récupère donc le paramètre "événement"
+      // Pour que l'étiquette "suive la souris", on récupère le paramètre "événement"
+      // qui contient les coordonnées de la souris au moment du déclenchement de l'événement
       x = e.pageX;
       y = e.pageY - $('#map').offset().top;
-      // pageX et pageY nous donnent la position de la souris au moment du déclenchement de l'événement
-      // donc au moment où la souris entre dans le champ du path
-      // relativement à la page (alors que top est défini relativement à son containeur)
-      // voir aussi clientX et screenX
+      // pageX et pageY nous donnent la position de la souris au moment où la souris entre dans le champ du path
+      // c'est une position relative à la page (or ici, top est défini relativement à son conteneur)
+      // // voir aussi clientX et screenX
       lieu = $(this).attr('id');
       if (lieu != 'fond') {
         $('#etiquet-var').text(lieu);
-        $('#etiquet-var').css('left', x)
-        $('#etiquet-var').css('top', y)
-        $('#etiquet-var').fadeIn(100)
+        $('#etiquet-var').css('left', x);
+        $('#etiquet-var').css('top', y);
+        // Une fois prête, on affiche
+        $('#etiquet-var').fadeIn(100);
       }
       else {
-        $('#etiquet-var').hide()
+        // Si on survole le fond, on cache l'étiquette qui ne sert qu'à embrouiller
+        $('#etiquet-var').hide();
       }
     })
 
-    // Plus besoin de l'étiquette en hover si on sort de la zone de la carte
-    $('#map').on('mouseout','path',function(){
-      $('#etiquet-var').hide()
+        // L'étiquette disparaît aussi si on sort de la carte
+        $('#map').on('mouseout','path',function(){
+          $('#etiquet-var').hide();
+        })
+
+// Affichage d'une étiquette ancrée et plus durable au clic //
+// Affichage aussi, heureusement, d'un résultat ! //
+    $('#map').on('click','path',function(){
+      // Sur n'importe quel clic, on réinitialise l'offset : on refait une requête toute neuve
+      offset = 0;
+      // L'attribut du path coché donne commodément des informations exploitables pour la requête : un nom de région ou numéro de dpt
+      lieu = $(this).attr('id');
+      // Sauf si on clique sur le fond, on lance la requête
+      if (lieu != 'fond') {
+        $('#listMonuments').html('');
+        if (niveau < 2) niveau++;
+        // Voici notre étiquette fixe
+        $('#etiquet-fix').text(lieu);
+        $('#etiquet-fix').fadeIn(100);
+        // La couleur du département coché = rose (sauf que pour le moment le bleu clair de #map path overrides)
+        $(this).addClass('depRose');
+        // Le clic prend précédence sur le champ de recherche (c'est la dernière action)
+        // Pour éviter les embrouilles dans le traitement, on décoche les boutons radio : la recherche ne sera pas active
+        if ($('#commune').is(':checked')) { $('#commune').prop('checked', false); }
+        // Appel à la fonction lançant la requête Ajax, en passant tous les paramètres, vides ou pleins
+        listMonuments(lieu, epoque, categorie, type, recherche, offset);
+      } // si on clique sur le fond, la réinitialisation est prise en charge par la fonction "au clic" dans jquery.js
     })
 
-    $('#map').on('click','path',function(){
-      $('#map path').css('fill', '#dfffff');
-      lieu = $(this).attr('id');
-      if (lieu != 'fond') {
-        if (niveau < 2) niveau++
-        $('#etiquet-fix').text(lieu)
-        $('#etiquet-fix').fadeIn(100)
-        $(this).css('fill', '#c64c4e');
-        if ($('#commune').is(':checked')) { $('#commune').prop('checked', false); }
-        listMonuments(lieu, epoque, categorie, type, recherche, offset);
-      } // et si on clique sur le fond, la réinitialisation est prise en charge par la fonction "au clic" dans jquery.js
-    })
+
+
+//////// //////// //////// //////// /////////
+////////////////  CHRONO  \\\\\\\\\\\\\\\\\\\
+//\\\\\\ \\\\\\\\ \\\\\\\\ \\\\\\\\ \\\\\\\\\
 
     $('#chronoFrise').on('click','path',function(){
+      offset = 0;
       // les époques peuvent se cumuler : si c'est le cas et qu'on coche plutôt qu'on ne décoche, on ajoute
       if ((epoque != '') && (!$(this).hasClass('coche') )) {
         // On affiche pour l'utilisateur le 'name', qui reprend le nom de l'époque
         // Et on range l'id correspondant à CodeEpoque dans la variable 'epoque', qui va servir à notre requête
-        epoque += ';' + $(this).attr('id')
-        nom_epoque += ' ; ' + $(this).attr('name')
+        epoque += ';' + $(this).attr('id');
+        nom_epoque += ' ; ' + $(this).attr('name');
       } // si on décoche, il faut retirer (c'est du pur javascript):
       else if ($(this).hasClass('coche')) {
         epoque = epoque.replace($(this).attr('id'), '');
@@ -75,8 +109,8 @@ $(document).ready(function() {
         nom_epoque = nom_epoque.replace(/( ;  ; )/, ' ; ');
       }
       else { // dernier cas : rien n'est rangé dans époque, on n'a pas besoin de ';', ni d'ajouter à l'existant
-        epoque = $(this).attr('id')
-        nom_epoque = $(this).attr('name')
+        epoque = $(this).attr('id');
+        nom_epoque = $(this).attr('name');
       }
       console.log(epoque);
       // un clic => on ajoute la classe 'coche' à l'élément cliqué, devient bleu pour le visuel
@@ -92,7 +126,13 @@ $(document).ready(function() {
       $('#etiquet-frises').text(nom_epoque);
     })
 
+
+//////// //////// //////// //////// /////////
+/////////////// CATEGORIES \\\\\\\\\\\\\\\\\\
+//\\\\\\ \\\\\\\\ \\\\\\\\ \\\\\\\\ \\\\\\\\\
+
     $('#friseCat').on('click','path',function(){
+      offset = 0;
       epoque += '<li>'+$(this).attr('id')+'</li>';
       $(this).css('fill', '#7D9EA5');
       if ($('#nom').is(':checked')) { $('#nom').prop('checked', false); }
@@ -100,15 +140,15 @@ $(document).ready(function() {
       $('#frise').text(categorie);
     })
 
-// $('#suivant').click(function(){}) ne marche pas. Idem pour les autres. Pourquoi ?
-    $(document).on('click','#suivant', function() {
-      offset++;
-      listMonuments(lieu, epoque, categorie, type, recherche, offset);
-      console.log('offset = ' + offset);
-    })
 
-    function listMonuments(lieu, epoque, categorie, type, recherche, offset) {
 
+//////// //////// //////// //////// /////////
+//////////////// RESULTAT \\\\\\\\\\\\\\\\\\\
+//\\\\\\ \\\\\\\\ \\\\\\\\ \\\\\\\\ \\\\\\\\\
+
+function listMonuments(lieu, epoque, categorie, type, recherche, offset) {
+
+    // On définit la requête
     if (window.XMLHttpRequest) {
             // code for IE7+, Firefox, Chrome, Opera, Safari
             xmlhttp = new XMLHttpRequest();
@@ -116,27 +156,67 @@ $(document).ready(function() {
             // code for IE6, IE5
             xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
         }
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                $("#listMonuments").html(this.responseText);
-            }
-        };
-        xmlhttp.open("GET","php/getListe.php?lieu="+lieu+"&epoque="+epoque+"&categorie="+categorie+"&type="+type+"&recherche="+recherche+"&offset="+offset,true);
-        xmlhttp.send();
-  }
 
-//// window.XMLHttpRequest etc. est EQUIVALENT A :    ////
+    // Si tout est prêt, on indique où afficher le retour (les 'echo' dans le php)
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            $("#listMonuments").html(this.responseText);
+        }
+    };
+    // On ouvre (formule) la requête : on précise la méthode et l'url du fichier à ouvrir
+    // (on pourrait également passer les paramètres : 'async', nom d'utilisateur, mot de passe
+    // Ici requête = méthode GET avec une URL bourrée de paramètres, mais rien de trop long
+    // Si les variables à passer étaient trop volumineuses pour du GET, on aurait fait un POST
+    xmlhttp.open("GET","php/getListe.php?lieu="+lieu+
+                                        "&epoque="+epoque+
+                                        "&categorie="+categorie+
+                                        "&type="+type+
+                                        "&recherche="+recherche+
+                                        "&offset="+offset,
+                                        true);
+    // Envoie la requête au serveur (jamais de paramètre avec GET, toujours des paramètres avec POST)
+    xmlhttp.send();
+}
+
+
+
+//////// //////// //////// //////// /////////
+/////////////// NAVIGATION \\\\\\\\\\\\\\\\\\
+//\\\\\\ \\\\\\\\ \\\\\\\\ \\\\\\\\ \\\\\\\\\
+
+  // $('#suivant').click(function(){}) ne marche pas, il faut passer par le "on".
+  // Idem pour tous les autres. Pourquoi ?
+    $(document).on('mouseover','#suivant', function() {
+      temporise(1);
+      // Pour éviter un Suivant en cascade, on met un délai de 1 seconde
+    })
+    $(document).on('mouseover','#precedent', function() {
+      // Pour éviter un Précédent en cascade.. et on ne remonte pas plus loin que la "page 1"
+      if (offset > 0) temporise(-1);
+    })
+
+    function temporise(dir) {
+      setTimeout(function(){
+        // on ajoute ou retire un selon la direction passée en paramètre (suivant ou précédent)
+        offset += dir;
+        // on relance la requête avec l'offset incrémenté
+        listMonuments(lieu, epoque, categorie, type, recherche, offset);
+        console.log('offset = ' + offset);
+      },1000);
+    }
+
+//////// //////// //////// //////// //////// //////// ////////
+//// AUTRE SYNTAX EQUIVALENTE POUR LA REQUETE AJAX :    ////
   //   $.ajax({    //create an ajax request to display.php
   //     type: "GET",
-  //     url: "php/getListe.php?lieu="+lieu+"&epoque="+epoque+"&categorie="+categorie+"&type="+type+"&recherche="+recherche,
+  //     url: "php/getListe.php?lieu="+lieu+"&epoque="+epoque+"&categorie="
+  //                                  +categorie+"&type="+type+"&recherche="
+  //                                  +recherche+"&offset="+offset,
   //     dataType: "html",   //expect html to be returned
   //     success: function(response){
   //         $("#listMonuments").html(response);
   //     }
   // });
-//////////////////////////////////////////////////////
+//\\\\\\ \\\\\\\\ \\\\\\\\ \\\\\\\\ \\\\\\\\ \\\\\\\\ \\\\\\\\\
 
-    // 1 => prehistoire
-    // 2 => protohistoire
-    // 3 => romain
 });

@@ -71,6 +71,7 @@ function showMap(lieu) {
       // else
       $('#map').load('img/map.svg')
       $('#etiquet-fix').hide()
+      $('#listMonuments').html('')
       break;
     default:
       niveau = 2;

@@ -110,38 +110,57 @@ main {
 
   #listMonuments {
     width: 100%;
+    margin-top: 1vw;
     padding: 1vw;
     font-size: 1vw;
     font-family: 'Bonveno', 'Raleway';
   }
 
-  .ligne {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    line-height: 2vw;
-  }
+      .ligne {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        line-height: 2vw;
+      }
 
-  .ligne:nth-child(even) {
-    background-color: #dfffff;
-  }
+          .ligne p {
+            padding: 0 1vw;
+            /* pas de retour à la ligne après un espace comme c'est le cas par défaut lorsqu'il n'y a plus assez de place pour le mot suivant */
+            white-space: nowrap;
+            /* on cache ce qui dépasse pour éviter de déformer la cellule avec un flex trop complaisant */
+            overflow: hidden;
+          }
 
-  .ligne p:nth-child(even) {
-    font-size: 0.9vw;
-    flex:1;
-  }
+          .ligne:nth-child(odd) {
+            background-color: #dfffff;
+          }
 
-  .ligne p:nth-child(odd) {
-    flex:2;
-  }
+          .ligne p:nth-child(odd) {
+            font-size: 0.7vw;
+            flex:4;
+          }
 
-  #suivant {
-    padding: 3px 1vw;
-    width: 5vw;
-    line-height: 1vw;
-    margin: 1vw 40%;
-    background-color: #7D9EA5;
-  }
+          .ligne p:nth-child(2) {
+            font-size: 0.9vw;
+            flex:11;
+          }
+
+  /* Boutons Suivant et Précédant */
+    .navig {
+      position: absolute;
+      bottom : 2vw;
+      transform: translate(-100%, 0);
+      padding: 3px 1vw;
+      width: 7vw;
+      font-size: 1vw;
+      line-height: 1vw;
+      margin: 1vw 40%;
+      background-color: #7D9EA5;
+    }
+
+        #suivant { left: 20%; }
+
+        #precedent { left: 0; }
 
 
   #chronofrise, #friseCat {
@@ -214,11 +233,12 @@ main {
   }
 
 #etiquet-frises {
-    height: 1vw;
+    height: 1.5vw;
     width: 100%;
     font-size: 1vw;
     text-align: center;
-    baseline: 100%;
+    margin: 0 5%;
+    background-image: linear-gradient(to bottom, rgba(125, 158, 165, 1), rgba(125, 158, 165, 0));
 }
 
 .coche {
