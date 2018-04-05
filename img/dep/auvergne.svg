@@ -1,4 +1,4 @@
-<svg version="1.1" viewBox="-10 -10 580 580" class="region">
+<svg version="1.1" viewBox="-10 -10 580 580" class="region" id="Auvergne-Rhone-Alpes">
   <a title="Retour à la carte de le France" onclick="showMap('France')">
      <rect
        id="fond"

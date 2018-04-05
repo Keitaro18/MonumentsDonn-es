@@ -1,3 +1,9 @@
+// variables pour revenir d'un cran en arrière lorsqu'on clique dans l'eau :
+// le niveau de la carte à charger : France, région, département :
+    var niveau = 0;
+// le nom de la carte à charger
+    var carte = '';
+
 function showMap(lieu) {
 
   switch (lieu) {
@@ -38,7 +44,7 @@ function showMap(lieu) {
       $('#map').load('img/dep/occitanie.svg')
       niveau = 1;
       break;
-    case "Auvergne":
+    case "Auvergne-Rhone-Alpes":
       $('#map').load('img/dep/auvergne.svg')
       niveau = 1;
       break;
@@ -55,9 +61,15 @@ function showMap(lieu) {
       niveau = 1;
       break;
     case "France":
+    // à revoir
+      // if (niveau == 2) {
+      //   niveau--
+      //   lieu = $('#map svg').attr('id')
+      //   carte = $('#map svg').attr("src")
+      //   $('#map').load(carte)
+      // }
+      // else
       $('#map').load('img/map.svg')
-      niveau = 0;
-      lieu = ''
       $('#etiquet-fix').hide()
       break;
     default:

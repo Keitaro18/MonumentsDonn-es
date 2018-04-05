@@ -1,12 +1,20 @@
 $(document).ready(function() {
-    var niveau = 0;
+////// Paramètres de la fonction ajax pour la requête SQL //////
+    // lorsqu'on clique sur la carte
     var lieu = '';
+    // lorsqu'on clique sur une époque dans la frise chronologique
     var epoque = '';
-    var nom_epoque = '';
+    // lorsqu'on clique une catégorie dans la frise des catégories
     var categorie = '';
+    // si un type de recherche est coché
     var type = '';
+    // on sait quoi chercher avec le contenu du champ de recherche
     var recherche = '';
-    var nom = '';
+    // lorsqu'on appuie sur suivant, on veut la suite de la liste des monuments
+    var offset = 0;
+
+////// Pour traitement JS uniquement //////
+    var nom_epoque = '';
 
     $('aside').fadeIn(1000);
 
@@ -39,21 +47,16 @@ $(document).ready(function() {
       $('#map path').css('fill', '#dfffff');
       lieu = $(this).attr('id');
       if (lieu != 'fond') {
+        if (niveau < 2) niveau++
         $('#etiquet-fix').text(lieu)
         $('#etiquet-fix').fadeIn(100)
         $(this).css('fill', '#c64c4e');
         if ($('#commune').is(':checked')) { $('#commune').prop('checked', false); }
-        listMonuments(lieu, epoque, categorie, type, recherche);
+        listMonuments(lieu, epoque, categorie, type, recherche, offset);
       } // et si on clique sur le fond, la réinitialisation est prise en charge par la fonction "au clic" dans jquery.js
     })
 
-    // $('#chronoFrise').on('mouseover','path',function(e){
-    //   nom = $(this).attr('name');
-    //   $('#etiquet-frises').text(nom)
-    //   // $('#etiquet-frises').fadeIn(1000)
-    // })
-
-    $('#chronoFrise').on('click','path',function(e){
+    $('#chronoFrise').on('click','path',function(){
       // les époques peuvent se cumuler : si c'est le cas et qu'on coche plutôt qu'on ne décoche, on ajoute
       if ((epoque != '') && (!$(this).hasClass('coche') )) {
         // On affiche pour l'utilisateur le 'name', qui reprend le nom de l'époque
@@ -85,27 +88,26 @@ $(document).ready(function() {
         $('#epoque').prop('checked', false);
         $('#submit').prop('disabled', true);
       }
-      listMonuments(lieu, epoque, categorie, type, recherche);
+      listMonuments(lieu, epoque, categorie, type, recherche, offset);
       $('#etiquet-frises').text(nom_epoque);
     })
 
-    $('#friseCat').on('click','path',function(e){
+    $('#friseCat').on('click','path',function(){
       epoque += '<li>'+$(this).attr('id')+'</li>';
       $(this).css('fill', '#7D9EA5');
       if ($('#nom').is(':checked')) { $('#nom').prop('checked', false); }
-      listMonuments(lieu, epoque, categorie, type, recherche);
+      listMonuments(lieu, epoque, categorie, type, recherche, offset);
       $('#frise').text(categorie);
     })
 
-    function listMonuments(lieu, epoque, categorie, type, recherche) {
-    //   $.ajax({    //create an ajax request to display.php
-    //     type: "GET",
-    //     url: "php/getListe.php?lieu="+lieu+"&epoque="+epoque+"&categorie="+categorie+"&type="+type+"&recherche="+recherche,
-    //     dataType: "html",   //expect html to be returned
-    //     success: function(response){
-    //         $("#listMonuments").html(response);
-    //     }
-    // });
+// $('#suivant').click(function(){}) ne marche pas. Idem pour les autres. Pourquoi ?
+    $(document).on('click','#suivant', function() {
+      offset++;
+      listMonuments(lieu, epoque, categorie, type, recherche, offset);
+      console.log('offset = ' + offset);
+    })
+
+    function listMonuments(lieu, epoque, categorie, type, recherche, offset) {
 
     if (window.XMLHttpRequest) {
             // code for IE7+, Firefox, Chrome, Opera, Safari
@@ -119,9 +121,20 @@ $(document).ready(function() {
                 $("#listMonuments").html(this.responseText);
             }
         };
-        xmlhttp.open("GET","php/getListe.php?lieu="+lieu+"&epoque="+epoque+"&categorie="+categorie+"&type="+type+"&recherche="+recherche,true);
+        xmlhttp.open("GET","php/getListe.php?lieu="+lieu+"&epoque="+epoque+"&categorie="+categorie+"&type="+type+"&recherche="+recherche+"&offset="+offset,true);
         xmlhttp.send();
   }
+
+//// window.XMLHttpRequest etc. est EQUIVALENT A :    ////
+  //   $.ajax({    //create an ajax request to display.php
+  //     type: "GET",
+  //     url: "php/getListe.php?lieu="+lieu+"&epoque="+epoque+"&categorie="+categorie+"&type="+type+"&recherche="+recherche,
+  //     dataType: "html",   //expect html to be returned
+  //     success: function(response){
+  //         $("#listMonuments").html(response);
+  //     }
+  // });
+//////////////////////////////////////////////////////
 
     // 1 => prehistoire
     // 2 => protohistoire
