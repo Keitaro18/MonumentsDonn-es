@@ -10,10 +10,11 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/map.css">
   <link rel="stylesheet" href="css/fonts.css">
-  <link href="https://fonts.googleapis.com/css?family=Redressed" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Caesar+Dressing|Raleway|Redressed" rel="stylesheet">
   <title>Monuments d'ici et d'hier</title>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" async></script>
   <script type="text/javascript" src="js/script.js" async></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" defer></script>
+  <script type="text/javascript" src="js/jquery.js" defer></script>
 </head>
 <body>
 
@@ -28,11 +29,14 @@
               <span id="temps">Temps modernes</span>
         </div>
         <?php include_once "img/friseCat.svg"; ?>
+        <p id="etiquet-frises"></p>
   </header>
 
-   <aside id="select">
-         <p id="dep"></p>
-         <div id="map">
+  <main>
+   <aside id="select" hidden>
+         <p id="etiquet-fix" hidden>France</p>
+         <p id="etiquet-var" hidden></p>
+         <div id="map" >
            <?php include "img/map.svg"; ?>
          </div>
          <form action="php/class.php" method="post" target="result">
@@ -40,21 +44,25 @@
            <input type="submit" name="go" value="Go!" />
            <div id="radio">
              <label for="commune">par commune</label>
-             <input type="radio" name="type" value="commune" id="commune" checked>
+             <input type="radio" name="type" value="commune" id="commune" class="type" checked>
              <label for="epoque">par époque</label>
-             <input type="radio" name="type" value="époque" id="epoque">
+             <input type="radio" name="type" value="époque" id="epoque" class="type">
              <label for="nom">par nom</label>
-             <input type="radio" name="type" value="nom" id="nom">
+             <input type="radio" name="type" value="nom" id="nom" class="type">
            </div>
          </form>
     </aside>
 
-    <main id="fenetre">
-      <iframe name="result"></iframe>
+    <div id="fenetre">
+
+      <!-- <iframe name="result"></iframe> -->
       <div id = "listMonuments">
         <!-- Liste des monuments issus de la recherche -->
       </div>
-    </main>
+
+    </div>
+
+  </main>
 
   <?php
       // $search = "<br>http://www.wikipedia.org/search-redirect.php?language=fr&search=" . $_POST['search'];
@@ -63,6 +71,7 @@
       // echo $search;
   ?>
 </main>
+
 
 </body>
 </html>

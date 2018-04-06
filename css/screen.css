@@ -1,40 +1,21 @@
 body {
   margin-top: 1em;
-  /* display: flex; */
 }
-
 
 /*** div gauche : contient la map et champ de recherche ***/
   aside {
-    width: 35%;
-  }
-
-
-  /*** Select ***/
-  #select {
     width: 30%;
-  }
-
-  /*** Select ***/
-  #listMonuments {
-    width: 60%;
   }
 
 /*** div droite : contient header et résultats de recherche ***/
 #droite {
-  width: 65%;
+  width: 70%;
 }
 
 #fenetre {
-  width: 20em;
-  height: 10em;
   position: relative;
   overflow: hidden;
-  /* border: 1px solid grey; */
-}
-iframe {
-  width: 50em;
-  height: 30em;
+  width: 65%;
 }
 
 h1 {
