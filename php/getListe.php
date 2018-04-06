@@ -18,14 +18,16 @@
               $this->conn = connexion();
               $epoques = explode (';', $this->epoque);
               // On veut à peu près 15 résultats au total, or on passe plusieurs requêtes qui se cumulent
-              $limit = round(15 / count($epoques));
+              if (count($epoques) == 6) $limit = floor(15 / count($epoques));
+              else $limit = round(15 / count($epoques));
               foreach ($epoques as $value){
-                    $requete = $this->conn->prepare('SELECT Commune, Appellation, Siecle FROM
+                    $requete = $this->conn->prepare('SELECT Commune, Appellation, Siecle, IdMon FROM
                           (SELECT Monuments.Appellation AS Appellation,
                                   Monuments.DetailSiecle AS Siecle,
                                   Codes.Commune AS Commune,
                                   Monuments.INSEE,
-                                  Codes.CodePostal
+                                  Codes.CodePostal,
+                                  Monuments.IdMon AS IdMon
                               FROM Monuments INNER JOIN Codes
                                 ON Monuments.INSEE = Codes.INSEE
                                 AND Monuments.CodeEpoque = ' . $value . '
@@ -40,12 +42,13 @@
     public function query() {
       $this->conn = connexion();
       if (strlen ($this->lieu) < 4){
-          $requete = $this->conn->prepare('SELECT DISTINCT INSEE, Commune, Appellation, Detail FROM
+          $requete = $this->conn->prepare('SELECT DISTINCT INSEE, Commune, Appellation, Siecle, IdMon FROM
                 (SELECT Monuments.Appellation AS Appellation,
-                        Monuments.DetailSiecle AS Detail,
+                        Monuments.DetailSiecle AS Siecle,
                         Codes.Commune AS Commune,
                         Monuments.INSEE AS INSEE,
-                        Codes.CodePostal AS Code
+                        Codes.CodePostal,
+                        Monuments.IdMon AS IdMon
                     FROM Monuments INNER JOIN Codes
                         ON Monuments.INSEE = Codes.INSEE
                         AND Monuments.INSEE REGEXP "^'. $this->lieu . '|; '. $this->lieu . '"
@@ -53,13 +56,12 @@
                 ') AS t');
 
       }else{
-          $requete = $this->conn->prepare('SELECT Appellation, Commune, Detail FROM
+          $requete = $this->conn->prepare('SELECT Appellation, Commune, Siecle, IdMon FROM
                 (SELECT Monuments.Appellation AS Appellation,
-                        Monuments.DetailSiecle AS Detail,
+                        Monuments.DetailSiecle AS Siecle,
                         Codes.Commune AS Commune,
-                        Monuments.INSEE AS INSEE,
-                        Regions.Region AS Region,
-                        Codes.INSEE AS Code
+                        Regions.Region,
+                        Monuments.IdMon as IdMon
                     FROM Monuments
                     INNER JOIN Regions
                         ON LEFT(Monuments.INSEE, 2) = Regions.CodeDpt
@@ -81,8 +83,9 @@
       while($ligne = $requete->fetch()) {
           echo '<div class="ligne">';
           echo '<p>' . $ligne['Commune'] . '</p>';
-          echo '<p>' . substr($ligne['Appellation'], 0, 70) . '</p>';
+          echo '<p>' . substr($ligne['Appellation'], 0, 71) . '</p>';
           echo '<p>' . substr($ligne['Siecle'], 0, 30) . '</p>';
+          echo '<div id="info'. $ligne['IdMon'] . '" hidden>'. $ligne['IdMon'] . '</div>';
           echo '</div>';
       }
       echo '<input type="button" class="navig" id="precedent" value="Précédent">';
@@ -117,8 +120,8 @@ $rechercheClic->lieu = $_GET['lieu'];
 $rechercheClic->categorie = $_GET['categorie'];
 $rechercheClic->epoque = $_GET['epoque'];
 $rechercheClic->offset = $_GET['offset'];
-// $rechercheClic->query();
-$rechercheClic->queryEpoque();
+$rechercheClic->query();
+// $rechercheClic->queryEpoque();
 
 // $rechercheChamp = new Recherche;
 

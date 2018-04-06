@@ -121,6 +121,11 @@ main {
         flex-direction: row;
         justify-content: space-between;
         line-height: 2vw;
+        cursor: pointer;
+      }
+
+      .ligne:hover {
+        font-weight: 800;
       }
 
           .ligne p {
