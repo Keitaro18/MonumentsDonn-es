@@ -124,6 +124,10 @@ main {
         justify-content: space-between;
       }
 
+      .ligne:hover {
+        font-weight: 800;
+      }
+
           .ligne .valeur {
             padding: 0 1vw;
             /* pas de retour à la ligne après un espace comme c'est le cas par défaut lorsqu'il n'y a plus assez de place pour le mot suivant */

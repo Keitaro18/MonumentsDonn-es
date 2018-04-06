@@ -138,7 +138,7 @@ $(document).ready(function() {
       if ($('#nom').is(':checked')) { $('#nom').prop('checked', false); }
       listMonuments(lieu, epoque, categorie, type, recherche, offset);
       $('#frise').text(categorie);
-    })
+    });
 
 
 
@@ -178,6 +178,25 @@ function listMonuments(lieu, epoque, categorie, type, recherche, offset) {
     xmlhttp.send();
 }
 
+var idInfo = '';
+$('#listMonuments').on('click', '.ligne', function() {
+  idInfo = $(this).find("div").attr("id");
+  // "[id^=info]"
+  $('#'+idInfo).fadeIn();
+  detailMonument($('#'+idInfo).text());
+});
+
+
+function detailMonument(id) {
+  $.ajax({
+      type: "GET",
+      url: "php/getInfo.php?id="+id,
+      dataType: "html",   //expect html to be returned
+      success: function(response){
+          $('#'+idInfo).html(response);
+      }
+  });
+}
 
 
 //////// //////// //////// //////// /////////
@@ -186,23 +205,21 @@ function listMonuments(lieu, epoque, categorie, type, recherche, offset) {
 
   // $('#suivant').click(function(){}) ne marche pas, il faut passer par le "on".
   // Idem pour tous les autres. Pourquoi ?
-    $(document).on('mouseover','#suivant', function() {
-      temporise(1);
+    $(document).on('click','#suivant', function() {
+      navig(1);
       // Pour éviter un Suivant en cascade, on met un délai de 1 seconde
     })
     $(document).on('mouseover','#precedent', function() {
       // Pour éviter un Précédent en cascade.. et on ne remonte pas plus loin que la "page 1"
-      if (offset > 0) temporise(-1);
+      if (offset > 0) navig(-1);
     })
 
-    function temporise(dir) {
-      setTimeout(function(){
-        // on ajoute ou retire un selon la direction passée en paramètre (suivant ou précédent)
-        offset += dir;
-        // on relance la requête avec l'offset incrémenté
-        listMonuments(lieu, epoque, categorie, type, recherche, offset);
-        console.log('offset = ' + offset);
-      },1000);
+    function navig(dir) {
+      // on ajoute ou retire un selon la direction passée en paramètre (suivant ou précédent)
+      offset += dir;
+      // on relance la requête avec l'offset incrémenté
+      listMonuments(lieu, epoque, categorie, type, recherche, offset);
+      console.log('offset = ' + offset);
     }
 
 //////// //////// //////// //////// //////// //////// ////////

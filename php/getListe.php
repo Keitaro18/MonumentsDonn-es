@@ -18,7 +18,8 @@
               $this->conn = connexion();
               $epoques = explode (';', $this->epoque);
               // On veut à peu près 15 résultats au total, or on passe plusieurs requêtes qui se cumulent
-              $limit = round(15 / count($epoques));
+              if (count($epoques) == 6) $limit = floor(15 / count($epoques));
+              else $limit = round(15 / count($epoques));
               foreach ($epoques as $value){
                     $requete = $this->conn->prepare('SELECT Commune, Appellation, Siecle, IdMon FROM
                           (SELECT Monuments.Appellation AS Appellation,
@@ -26,7 +27,7 @@
                                   Codes.Commune AS Commune,
                                   Monuments.INSEE,
                                   Codes.CodePostal,
-                                  Monuments.IdMon
+                                  Monuments.IdMon AS IdMon
                               FROM Monuments INNER JOIN Codes
                                 ON Monuments.INSEE = Codes.INSEE
                                 AND Monuments.CodeEpoque = ' . $value . '
@@ -41,9 +42,9 @@
     public function query() {
       $this->conn = connexion();
       if (strlen ($this->lieu) < 4){
-          $requete = $this->conn->prepare('SELECT DISTINCT INSEE, Commune, Appellation, Detail, IdMon FROM
+          $requete = $this->conn->prepare('SELECT DISTINCT INSEE, Commune, Appellation, Siecle, IdMon FROM
                 (SELECT Monuments.Appellation AS Appellation,
-                        Monuments.DetailSiecle AS Detail,
+                        Monuments.DetailSiecle AS Siecle,
                         Codes.Commune AS Commune,
                         Monuments.INSEE AS INSEE,
                         Codes.CodePostal AS Code,
@@ -55,14 +56,14 @@
                 ') AS t');
 
       }else{
-          $requete = $this->conn->prepare('SELECT Appellation, Commune, Detail, IdMon FROM
+          $requete = $this->conn->prepare('SELECT Appellation, Commune, Siecle, IdMon FROM
                 (SELECT Monuments.Appellation AS Appellation,
-                        Monuments.DetailSiecle AS Detail,
+                        Monuments.DetailSiecle AS Siecle,
                         Codes.Commune AS Commune,
                         Monuments.INSEE AS INSEE,
                         Regions.Region AS Region,
                         Codes.INSEE AS Code,
-                        Monuments.IdMon
+                        Monuments.IdMon as IdMo
                     FROM Monuments
                     INNER JOIN Regions
                         ON LEFT(Monuments.INSEE, 2) = Regions.CodeDpt
@@ -87,12 +88,13 @@
           echo '<p class="valeur">' . substr($ligne['Appellation'], 0, 70) . '</p>';
           echo '<p class="valeur">' . substr($ligne['Siecle'], 0, 30) . '</p>';
         //   echo '<div id="info'. $ligne['IdMon'] . '">'. $ligne['IdMon'] . '</div>';
-          echo '<div id="info'. $ligne['IdMon'] . '">
-          <p>Commune : Bourges</p><p>Appellation : Château de Bourges</p><p> années 1500, quand un peintre anonyme assembla
-            e Lorem Ipsum est simplement du faux texte emimprimerie depuis les années 1500, quand un peintre anonyme assembla
-            e Lorem Ipsum est simplement du faux texte emimprimerie depuis les années 1500</p><p>, quand un peintre anonyme assembla</p>
-            <div id="photo"><img src="http://via.placeholder.com/900x650"></div></div>';
+        //  echo '<div id="info'. $ligne['IdMon'] . '">
+        //  <p>Commune : Bourges</p><p>Appellation : Château de Bourges</p><p> années 1500, quand un peintre anonyme assembla
+        //    e Lorem Ipsum est simplement du faux texte emimprimerie depuis les années 1500, quand un peintre anonyme assembla
+        //    e Lorem Ipsum est simplement du faux texte emimprimerie depuis les années 1500</p><p>, quand un peintre anonyme assembla</p>
+        //    <div id="photo"><img src="http://via.placeholder.com/900x650"></div></div>';
           
+          echo '<div id="info'. $ligne['IdMon'] . '" hidden>'. $ligne['IdMon'] . '</div>';
           echo '</div>';
       }
       echo '<input type="button" class="navig" id="precedent" value="Précédent">';
