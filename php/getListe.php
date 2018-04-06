@@ -47,8 +47,8 @@
                         Monuments.DetailSiecle AS Siecle,
                         Codes.Commune AS Commune,
                         Monuments.INSEE AS INSEE,
-                        Codes.CodePostal,
-                        Monuments.IdMon AS IdMon
+                        Codes.CodePostal AS Code,
+                        Monuments.IdMon
                     FROM Monuments INNER JOIN Codes
                         ON Monuments.INSEE = Codes.INSEE
                         AND Monuments.INSEE REGEXP "^'. $this->lieu . '|; '. $this->lieu . '"
@@ -60,8 +60,10 @@
                 (SELECT Monuments.Appellation AS Appellation,
                         Monuments.DetailSiecle AS Siecle,
                         Codes.Commune AS Commune,
-                        Regions.Region,
-                        Monuments.IdMon as IdMon
+                        Monuments.INSEE AS INSEE,
+                        Regions.Region AS Region,
+                        Codes.INSEE AS Code,
+                        Monuments.IdMon as IdMo
                     FROM Monuments
                     INNER JOIN Regions
                         ON LEFT(Monuments.INSEE, 2) = Regions.CodeDpt
@@ -82,9 +84,16 @@
       $requete->setFetchMode(PDO::FETCH_ASSOC);
       while($ligne = $requete->fetch()) {
           echo '<div class="ligne">';
-          echo '<p>' . $ligne['Commune'] . '</p>';
-          echo '<p>' . substr($ligne['Appellation'], 0, 71) . '</p>';
-          echo '<p>' . substr($ligne['Siecle'], 0, 30) . '</p>';
+          echo '<p class="valeur">' . $ligne['Commune'] . '</p>';
+          echo '<p class="valeur">' . substr($ligne['Appellation'], 0, 70) . '</p>';
+          echo '<p class="valeur">' . substr($ligne['Siecle'], 0, 30) . '</p>';
+        //   echo '<div id="info'. $ligne['IdMon'] . '">'. $ligne['IdMon'] . '</div>';
+        //  echo '<div id="info'. $ligne['IdMon'] . '">
+        //  <p>Commune : Bourges</p><p>Appellation : Château de Bourges</p><p> années 1500, quand un peintre anonyme assembla
+        //    e Lorem Ipsum est simplement du faux texte emimprimerie depuis les années 1500, quand un peintre anonyme assembla
+        //    e Lorem Ipsum est simplement du faux texte emimprimerie depuis les années 1500</p><p>, quand un peintre anonyme assembla</p>
+        //    <div id="photo"><img src="http://via.placeholder.com/900x650"></div></div>';
+          
           echo '<div id="info'. $ligne['IdMon'] . '" hidden>'. $ligne['IdMon'] . '</div>';
           echo '</div>';
       }
@@ -102,16 +111,7 @@ function connexion() {
     require_once dirname(__FILE__) . '/param.php';
     require_once dirname(__FILE__) . '/connectionDB.php';
 
-    try
-    {
-        $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    }
-    catch (PDOException $e)
-    {
-            die('Erreur : ' . $e->getMessage());
-    }
-    // La connexion bien ouverte, on la renvoie à l'appeleur, ici dans la classe
+  // La connexion bien ouverte, on la renvoie à l'appeleur, ici dans la classe
     return $conn;
 }
 

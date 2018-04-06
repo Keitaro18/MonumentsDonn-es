@@ -109,6 +109,7 @@ main {
   /*** Select ***/
 
   #listMonuments {
+    position: relative;
     width: 100%;
     margin-top: 1vw;
     padding: 1vw;
@@ -118,22 +119,22 @@ main {
 
       .ligne {
         display: flex;
+        flex-wrap: wrap;
         flex-direction: row;
         justify-content: space-between;
-        line-height: 2vw;
-        cursor: pointer;
       }
 
       .ligne:hover {
         font-weight: 800;
       }
 
-          .ligne p {
+          .ligne .valeur {
             padding: 0 1vw;
             /* pas de retour à la ligne après un espace comme c'est le cas par défaut lorsqu'il n'y a plus assez de place pour le mot suivant */
             white-space: nowrap;
             /* on cache ce qui dépasse pour éviter de déformer la cellule avec un flex trop complaisant */
             overflow: hidden;
+            line-height: 2vw;
           }
 
           .ligne:nth-child(odd) {
@@ -148,6 +149,32 @@ main {
           .ligne p:nth-child(2) {
             font-size: 0.9vw;
             flex:11;
+          }
+
+          [id^='info'] { 
+            box-sizing: border-box;
+            display: flex;
+            margin: 0 2vw;
+            background-color: #7D9EA5;
+            border: 1px solid grey;
+          }
+
+          
+          #photo {
+            max-width: 15vw;
+            max-height: 10vw;
+          }
+          
+          #photo img {
+            width: auto;
+            height: auto;
+            max-width: inherit;
+            max-height: inherit;
+          }
+
+          [id^='info'] p {
+            font-size: 0.9vw;
+            line-height: 1.5vw;
           }
 
   /* Boutons Suivant et Précédant */
