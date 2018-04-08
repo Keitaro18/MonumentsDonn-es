@@ -5,7 +5,7 @@
   transition: 1s;
   -webkit-transition: 1s; }
 
-#map path {
+#map path:not(.depRose){
   /* on doit absolument définir le remplissage via CSS si on veut pouvoir agir dessus */
   fill: #dfffff;
   transition: 0.2s;
@@ -94,8 +94,8 @@ input[type='search'] {
   font-size: 1.8vw;
 }
 
-/*** Bouton submit ***/
-input[type='submit'] {
+/*** Bouton MH ***/
+aside input[type='button'] {
   width: 2vw;
   color: transparent;
   background-color: transparent;
@@ -103,7 +103,7 @@ input[type='submit'] {
   background-size: contain;
     height: 2vw;
 }
-input[type='submit']:hover {
+input[type='button']:hover {
   cursor: pointer;
 }
 

@@ -72,6 +72,7 @@ function showMap(lieu) {
       $('#map').load('img/map.svg')
       $('#etiquet-fix').hide()
       $('#listMonuments').html('')
+      if (!($('#commune').is(':checked'))) lieu = ''
       break;
     default:
       niveau = 2;
