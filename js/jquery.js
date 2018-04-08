@@ -73,7 +73,8 @@ $(document).ready(function() {
         // Voici notre étiquette fixe
         $('#etiquet-fix').text(lieu);
         $('#etiquet-fix').fadeIn(100);
-        // La couleur du département coché = rose (sauf que pour le moment le bleu clair de #map path overrides)
+        // Le département coché devient rose, mais il faut auparavant redonner à tout autre département sa couleur initiale
+        $('#map path').removeClass();
         $(this).addClass('depRose');
         // Le clic prend précédence sur le champ de recherche (c'est la dernière action)
         // Pour éviter les embrouilles dans le traitement, on décoche les boutons radio : la recherche ne sera pas active
@@ -90,6 +91,7 @@ $(document).ready(function() {
 //\\\\\\ \\\\\\\\ \\\\\\\\ \\\\\\\\ \\\\\\\\\
 
     $('#chronoFrise').on('click','path',function(){
+      if ($('#type[name="epoque"]').is(':checked')) { $('#type').prop('checked', false); }
       offset = 0;
       // les époques peuvent se cumuler : si c'est le cas et qu'on coche plutôt qu'on ne décoche, on ajoute
       if ((epoque != '') && (!$(this).hasClass('coche') )) {
@@ -135,11 +137,24 @@ $(document).ready(function() {
       offset = 0;
       epoque += '<li>'+$(this).attr('id')+'</li>';
       $(this).css('fill', '#7D9EA5');
-      if ($('#nom').is(':checked')) { $('#nom').prop('checked', false); }
+      if ($('#type').is(':checked')) { $('#type').prop('checked', false); }
       listMonuments(lieu, epoque, categorie, type, recherche, offset);
       $('#frise').text(categorie);
     });
 
+
+
+//////// //////// //////// //////// /////////
+////////////// CHAMP SEARCH \\\\\\\\\\\\\\\\\
+//\\\\\\ \\\\\\\\ \\\\\\\\ \\\\\\\\ \\\\\\\\\
+    $(':button').click(function() {
+      if ( ($(':checked')) && $('#recherche').val() != '' ) {
+        recherche = $('#recherche').val();
+        type = $(':checked').val();
+        // alert(type + " " + recherche)
+        listMonuments(lieu, epoque, categorie, type, recherche, offset);
+      }
+    })
 
 
 //////// //////// //////// //////// /////////
@@ -182,8 +197,9 @@ var idInfo = '';
 $('#listMonuments').on('click', '.ligne', function() {
   idInfo = $(this).find("div").attr("id");
   // "[id^=info]"
-  $('#'+idInfo).fadeIn();
   detailMonument($('#'+idInfo).text());
+  $('#'+idInfo).fadeIn();
+  // $('#'+idInfo).css('color', 'black')
 });
 
 
@@ -209,7 +225,7 @@ function detailMonument(id) {
       navig(1);
       // Pour éviter un Suivant en cascade, on met un délai de 1 seconde
     })
-    $(document).on('mouseover','#precedent', function() {
+    $(document).on('click','#precedent', function() {
       // Pour éviter un Précédent en cascade.. et on ne remonte pas plus loin que la "page 1"
       if (offset > 0) navig(-1);
     })

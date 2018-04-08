@@ -39,9 +39,9 @@
          <div id="map" >
            <?php include "img/map.svg"; ?>
          </div>
-         <form action="php/class.php" method="post" target="result">
-           <input type="search" name="search" placeholder="Chercher" autofocus/>
-           <input type="submit" name="go" value="Go!" />
+         <!-- <form action="" method="post" target="result"> -->
+           <input type="search" name="search" placeholder="Chercher" id="recherche" autofocus/>
+           <input type="button" name="go" value="Go!" />
            <div id="radio">
              <label for="commune">par commune</label>
              <input type="radio" name="type" value="commune" id="commune" class="type" checked>
@@ -50,7 +50,7 @@
              <label for="nom">par nom</label>
              <input type="radio" name="type" value="nom" id="nom" class="type">
            </div>
-         </form>
+         <!-- </form> -->
     </aside>
 
     <div id="fenetre">
