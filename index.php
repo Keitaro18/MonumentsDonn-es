@@ -1,3 +1,4 @@
+<!-- Mockup by Gautier Alexis Caroline Laure -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -12,8 +13,8 @@
   <link rel="stylesheet" href="css/fonts.css">
   <link href="https://fonts.googleapis.com/css?family=Caesar+Dressing|Raleway|Redressed" rel="stylesheet">
   <title>Monuments d'ici et d'hier</title>
-  <script type="text/javascript" src="js/script.js" async></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" defer></script>
+  <script type="text/javascript" src="js/script.js" async></script>
   <script type="text/javascript" src="js/jquery.js" defer></script>
 </head>
 <body>
@@ -28,7 +29,7 @@
               <span id="m-age">Moyen-Age</span>
               <span id="temps">Temps modernes</span>
         </div>
-        <?php include_once "img/friseCat.svg"; ?>
+        <?php include_once "img/categories.svg"; ?>
         <p id="etiquet-frises"></p>
   </header>
 
@@ -39,23 +40,21 @@
          <div id="map" >
            <?php include "img/map.svg"; ?>
          </div>
-         <!-- <form action="" method="post" target="result"> -->
            <input type="search" name="search" placeholder="Chercher" id="recherche" autofocus/>
-           <input type="button" name="go" value="Go!" />
+           <input type="button" name="go" value="Go!" disabled/>
            <div id="radio">
              <label for="commune">par commune</label>
-             <input type="radio" name="type" value="commune" id="commune" class="type" checked>
-             <label for="epoque">par époque</label>
+             <input type="radio" name="type" value="commune" id="commune" class="type">
+             <label for="epoque"> par époque</label>
              <input type="radio" name="type" value="époque" id="epoque" class="type">
-             <label for="nom">par nom</label>
-             <input type="radio" name="type" value="nom" id="nom" class="type">
+             <label for="nom"> par nom</label>
+             <input type="radio" name="type" value="nom" id="nom" class="type" checked>
            </div>
          <!-- </form> -->
     </aside>
 
     <div id="fenetre">
 
-      <!-- <iframe name="result"></iframe> -->
       <div id = "listMonuments">
         <!-- Liste des monuments issus de la recherche -->
       </div>
@@ -63,15 +62,6 @@
     </div>
 
   </main>
-
-  <?php
-      // $search = "<br>http://www.wikipedia.org/search-redirect.php?language=fr&search=" . $_POST['search'];
-      // echo $search;
-      // $search = "<br><br>http://commons.wikimedia.org/w/index.php?search=" . $_POST['search'];
-      // echo $search;
-  ?>
-</main>
-
 
 </body>
 </html>

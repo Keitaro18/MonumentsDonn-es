@@ -1,9 +1,7 @@
+<!-- SQL table epoque made by Caroline -->
+<!-- SQL table categories made by Laure -->
+<!-- class Recherche by Laure -->
 <?php
-
-// echo($_POST['search']);
-// if (empty($_POST['lieu'])) {$_POST['lieu']='';}
-// if (empty($_POST['categorie'])) {$_POST['categorie']='';}
-// if (empty($_POST['type'])) {$_POST['type']='';}
 
   class Recherche {
     public $epoque; // soit clic sur frise chrono, soit champ de recherche (si "par époque" coché)
@@ -11,8 +9,11 @@
     public $lieu; //$_POST['lieu']; // région ou département cliqué sur la carte
     public $search;
     private $offset;
-    private $conn;
+        // private $offset = $_GET['offset'];
+        // est impossible car l'assignement arrive à la première lecture
+        // seule une constante est alors possible, pas une variable
     private $type;
+    private $conn;
 
     public function setValues() {
       $this->offset = $_GET['offset'];
@@ -22,120 +23,72 @@
       $this->epoque = $_GET['epoque'];
       $this->search = $_GET['recherche'];
     }
-    public function queryEpoqueCarte() {
-        $this->setValues();
-            $this->conn = connexion();
-            $epoques = str_replace (';','', $this->epoque);
-            if (strlen ($this->lieu) < 4) { // clic sur département
-                  $requete = $this->conn->prepare('SELECT DISTINCT INSEE, Commune, Appellation, Siecle, IdMon FROM
-                          (SELECT Monuments.Appellation AS Appellation,
-                                  Monuments.DetailSiecle AS Siecle,
-                                  Codes.Commune AS Commune,
-                                  Monuments.INSEE AS INSEE,
-                                  Codes.CodePostal AS Code,
-                                  Monuments.IdMon AS IdMon
-                              FROM Monuments INNER JOIN Codes
-                                  ON Monuments.INSEE = Codes.INSEE
-                                  AND Monuments.CodeEpoque REGEXP "[' . $epoques . ']"
-                                  AND Monuments.INSEE REGEXP "^'. $this->lieu . '"
-                          LIMIT 15 OFFSET ' . ($this->offset * 15) .
-                          ') AS t');
-                  $this->afficheResultat($requete);
-            } else { // clic sur région
-                  $requete = $this->conn->prepare('SELECT Commune, Dpt, Appellation, Siecle, IdMon FROM
-                        (SELECT Monuments.Appellation AS Appellation,
-                                Monuments.DetailSiecle AS Siecle,
-                                Codes.Commune AS Commune,
-                                Regions.Dpt AS Dpt,
-                                Monuments.INSEE AS INSEE,
-                                Codes.CodePostal,
-                                Monuments.IdMon AS IdMon
-                            FROM Monuments
-                              INNER JOIN Codes
-                                  ON Monuments.INSEE = Codes.INSEE
-                                  AND Monuments.CodeEpoque REGEXP "[' . $epoques . ']"
-                              INNER JOIN Regions
-                                  ON LEFT(Monuments.INSEE, 2) = Regions.CodeDpt
-                                  AND Regions.Region = "' . $this->lieu . '"
-                            LIMIT 15 OFFSET ' . ($this->offset * 15)  .
-                        ') AS t');
-                        // $this->afficheDebug('SELECT Commune, Dpt, Appellation, Siecle, IdMon FROM
-                        //       (SELECT Monuments.Appellation AS Appellation,
-                        //               Monuments.DetailSiecle AS Siecle,
-                        //               Codes.Commune AS Commune,
-                        //               Regions.Dpt AS Dpt,
-                        //               Monuments.INSEE AS INSEE,
-                        //               Codes.CodePostal,
-                        //               Monuments.IdMon AS IdMon
-                        //           FROM Monuments
-                        //             INNER JOIN Codes
-                        //                 ON Monuments.INSEE = Codes.INSEE
-                        //                 AND Monuments.CodeEpoque REGEXP "[' . $epoques . ']"
-                        //             INNER JOIN Regions
-                        //                 ON LEFT(Monuments.INSEE, 2) = Regions.CodeDpt
-                        //                 AND Regions.Region = "' . $this->lieu . '"
-                        //           LIMIT 15 OFFSET ' . ($this->offset * 15)  .
-                        //       ') AS t');
-                $this->afficheResultat($requete);
-            } // clic sur région
-    } // queryEpoqueCarte()
 
-    public function queryEpoque() {
-            $this->conn = connexion();
-            // si plusieurs époques, on cherche les lignes correspondant indifféremment à chacune
-            $epoques = str_replace (';','', $this->epoque);
-                  $requete = $this->conn->prepare('SELECT Commune, Appellation, Siecle, IdMon FROM
-                        (SELECT Monuments.Appellation AS Appellation,
-                                Monuments.DetailSiecle AS Siecle,
-                                Codes.Commune AS Commune,
-                                Monuments.INSEE AS INSEE,
-                                Codes.CodePostal,
-                                Monuments.IdMon AS IdMon
-                            FROM Monuments
-                              INNER JOIN Codes
-                                  ON Monuments.INSEE = Codes.INSEE
-                                  AND Monuments.CodeEpoque REGEXP "[' . $epoques . ']"
-                            LIMIT 15 OFFSET ' . ($this->offset * 15)  .
-                        ') AS t');
-              $this->afficheResultat($requete);
-    } // queryEpoque()
-
-    public function queryCarte() {
+    private function lanceRequete($SQLquery) {
+      // $this->afficheDebug($SQLquery);
       $this->conn = connexion();
-      if (strlen ($this->lieu) < 4) { // clic sur département
-          $requete = $this->conn->prepare('SELECT DISTINCT INSEE, Commune, Appellation, Siecle, IdMon FROM
-                (SELECT Monuments.Appellation AS Appellation,
-                        Monuments.DetailSiecle AS Siecle,
-                        Codes.Commune AS Commune,
-                        Monuments.INSEE AS INSEE,
-                        Codes.CodePostal AS Code,
-                        Monuments.IdMon AS IdMon
-                    FROM Monuments INNER JOIN Codes
-                        ON Monuments.INSEE = Codes.INSEE
-                        AND Monuments.INSEE REGEXP "^'. $this->lieu . '|; '. $this->lieu . '"
-                LIMIT 15 OFFSET ' . ($this->offset * 15) .
-                ') AS t');
-      } else {
-          $requete = $this->conn->prepare('SELECT Appellation, Commune, Siecle, IdMon FROM
-                (SELECT Monuments.Appellation AS Appellation,
-                        Monuments.DetailSiecle AS Siecle,
-                        Codes.Commune AS Commune,
-                        Regions.Dpt AS Dpt,
-                        Monuments.INSEE AS INSEE,
-                        Regions.Region AS Region,
-                        Codes.INSEE AS Code,
-                        Monuments.IdMon AS IdMon
-                    FROM Monuments
-                    INNER JOIN Regions
-                        ON LEFT(Monuments.INSEE, 2) = Regions.CodeDpt
-                        AND Regions.Region = "' . $this->lieu . '"
-                    INNER JOIN Codes
-                        ON Monuments.INSEE = Codes.INSEE
-                  LIMIT 15 OFFSET ' . ($this->offset * 15) .
-                ') AS t');
-      } // clic sur région
+      $requete = $this->conn->prepare($SQLquery);
       $this->afficheResultat($requete);
-      $conn=null;
+      $this->conn=null;
+    }
+
+    public function query() {
+
+// // // // // // // // // // // // // époque // // // // // // // // // // // // // //
+        if (($this->epoque <> '') && ($this->type <> 'époque')) {
+          // regexp '[abc]' signifie soit a soit b soit c : nos codes époques n'ont qu'un chiffre donc ok
+          $queryEpoque = 'AND Monuments.CodeEpoque REGEXP "[' . $this->epoque . ']" ';
+        } elseif ($this->type == 'époque') {
+          $queryEpoque = 'AND Monuments.Siecle LIKE "%' . $this->search . '%" ';
+        } else { $queryEpoque = ''; }
+
+// // // // // // // // // // // // // lieu // // // // // // // // // // // // // //
+        if ((strlen($this->lieu) < 4) && (strlen($this->lieu) > 0)              // clic sur département
+            && ($this->type <> 'commune')) // pas de recherche "par commune"
+        {
+              $queryLieu = 'AND Monuments.INSEE REGEXP "^'. $this->lieu . '" ';
+        }
+        elseif ( (strlen($this->lieu) >= 4) && ($this->type <> 'commune') )     // clic sur région
+        {
+              $queryLieu = 'INNER JOIN Regions
+                  ON LEFT(Monuments.INSEE, 2) = Regions.CodeDpt
+                  AND Regions.Region = "' . $this->lieu . '" ';
+        }
+        elseif ($this->type == 'commune')                                       // recherche "par commune"
+        {
+              $queryLieu = 'AND Codes.Commune REGEXP "' . $this->search . '"';
+        }
+        else { $queryLieu = ''; }                                               // non renseigné
+
+// // // // // // // // // // // // // mot-clé // // // // // // // // // // // // // //
+        if ( ($this->type == 'nom') && ($this->search <> '') ) {
+          $querySearch = 'AND Monuments.Appellation LIKE "%' . $this->search . '%" ';
+        }
+        else { $querySearch = ''; }
+
+// // // // // // // // // // // // // catégorie // // // // // // // // // // // // // //
+        if ($this->categorie <> '') {
+          // La catégorie a été mise sur 2 chiffres, les différentes catégories étant isolées par des points-virgules
+          // On veut tester chaque catégorie : on veut le cumul
+          $categories = explode(';', $this->categorie);
+          foreach ($categories as $key => $categorie) {
+            if ($key == 0) $queryCat = 'AND Monuments.CodeCat LIKE "%' . $categorie . '%" ';
+            // .= pour concaténer à lui-même
+            else $queryCat .= 'OR Monuments.CodeCat LIKE "%' . $categorie . '%" ';
+          }
+        } else { $queryCat = ''; }
+            $SQLquery = 'SELECT DISTINCT INSEE, Commune, Appellation, Siecle, IdMon FROM
+                    (SELECT Monuments.Appellation AS Appellation,
+                            Monuments.DetailSiecle AS Siecle,
+                            Codes.Commune AS Commune,
+                            Monuments.INSEE AS INSEE,
+                            Codes.CodePostal AS Code,
+                            Monuments.IdMon AS IdMon
+                        FROM Monuments INNER JOIN Codes
+                            ON Monuments.INSEE = Codes.INSEE '
+                            . $querySearch . $queryEpoque . $queryCat . $queryLieu .
+                    ') AS t LIMIT 15 OFFSET ' . ($this->offset * 15) ;
+            $this->lanceRequete($SQLquery);
     } // query()
 
     // fonction appelée par d'autres fonctions dans la classe, donc privée
@@ -147,7 +100,7 @@
       while($ligne = $requete->fetch()) {
           echo '<div class="ligne">';
           // selon la requête le département est renseigné ou non (utile ou non)
-          if (isset($ligne['Dpt']))   $lieu = $ligne['Commune'] . ' ' . $ligne['Dpt'];
+          if (strlen($this->lieu) > 3) $lieu = '<em>' . substr($ligne['INSEE'], 0, 2) . '</em> ' . $ligne['Commune'];
           else                        $lieu = $ligne['Commune'];
           echo '<p class="valeur">' . $lieu . '</p>';
 
@@ -157,8 +110,9 @@
           echo '</div>';
           $nbligne++;
       }
-      echo '<input type="button" class="navig" id="precedent" value="Précédent">';
+      if ($this->offset > 0) echo '<input type="button" class="navig" id="precedent" value="Précédent">';
       if ($nbligne == 15) echo '<input type="button" class="navig" id="suivant" value="Suivant">';
+      if ($nbligne == 0) echo '<br>Pas de résultat pour cette recherche.';
     } // afficheResultat()
 
     private function afficheDebug($query) {
@@ -180,31 +134,6 @@ function connexion() {
 
 $recherche = new Recherche;
 $recherche->setValues();
-
-if ($_GET['type'] <> '') {
-  switch ($_GET['type']) {
-    case 0:
-      $recherche->lieu = $_POST['lieu'];
-      break;
-    case 1:
-      $recherche->epoque = $_POST['epoque'];
-      break;
-    case 2:
-      $recherche->nom = $_POST['nom'];
-      break;
-  }
-} else {
-  if (($recherche->epoque <> '') && ($recherche->lieu <> '')) {
-    $recherche->queryEpoqueCarte();
-    // echo 'queryEpoqueCarte';
-  } elseif ($recherche->lieu <> "") {
-    $recherche->queryCarte();
-    // echo 'queryCarte';
-  } elseif (($recherche->epoque <> '') && ($recherche->lieu == '')) {
-    $recherche->queryEpoque();
-    // echo 'queryEpoque';
-  }
-}
-
+$recherche->query();
 
  ?>

@@ -1,3 +1,6 @@
+// Code by Laure
+// SVG Map by Alexis
+
 // Initialisation JQuery
 $(document).ready(function() {
 
@@ -21,7 +24,12 @@ $(document).ready(function() {
 
 ////// Pour traitement JS uniquement //////
     var nom_epoque = '';
+    var nom_categorie = '';
+    var lieu_survol = '';
 
+// Au chargement de la page, on nettoie :
+  $('#recherche').val('');
+  $('#nom').prop('checked', true);
 
 
 //////// //////// //////// //////// /////////
@@ -40,9 +48,9 @@ $(document).ready(function() {
       // pageX et pageY nous donnent la position de la souris au moment où la souris entre dans le champ du path
       // c'est une position relative à la page (or ici, top est défini relativement à son conteneur)
       // // voir aussi clientX et screenX
-      lieu = $(this).attr('id');
-      if (lieu != 'fond') {
-        $('#etiquet-var').text(lieu);
+      lieu_survol = $(this).attr('id');
+      if (lieu_survol != 'fond') {
+        $('#etiquet-var').text(lieu_survol);
         $('#etiquet-var').css('left', x);
         $('#etiquet-var').css('top', y);
         // Une fois prête, on affiche
@@ -67,7 +75,7 @@ $(document).ready(function() {
       // L'attribut du path coché donne commodément des informations exploitables pour la requête : un nom de région ou numéro de dpt
       lieu = $(this).attr('id');
       // Sauf si on clique sur le fond, on lance la requête
-      if (lieu != 'fond') {
+      // if (lieu != 'fond') {
         $('#listMonuments').html('');
         if (niveau < 2) niveau++;
         // Voici notre étiquette fixe
@@ -81,10 +89,14 @@ $(document).ready(function() {
         if ($('#commune').is(':checked')) { $('#commune').prop('checked', false); }
         // Appel à la fonction lançant la requête Ajax, en passant tous les paramètres, vides ou pleins
         listMonuments(lieu, epoque, categorie, type, recherche, offset);
-      } // si on clique sur le fond, la réinitialisation est prise en charge par la fonction "au clic" dans jquery.js
+      // } // si on clique sur le fond, la réinitialisation est prise en charge par la fonction "au clic" dans jquery.js
     })
-
-
+    $('#map').on('click','rect',function() {
+        $('#etiquet-fix').hide()
+        $('#listMonuments').html('')
+        lieu = ''
+        listMonuments(lieu, epoque, categorie, type, recherche, offset);
+    })
 
 //////// //////// //////// //////// /////////
 ////////////////  CHRONO  \\\\\\\\\\\\\\\\\\\
@@ -114,18 +126,17 @@ $(document).ready(function() {
         epoque = $(this).attr('id');
         nom_epoque = $(this).attr('name');
       }
-      console.log(epoque);
       // un clic => on ajoute la classe 'coche' à l'élément cliqué, devient bleu pour le visuel
       // deux clics => perd sa classe 'coche', reprend sa couleur d'origine
       $(this).toggleClass('coche');
 
-      // Si le bouton radio 'epoque' est coché, on décoche (le clic sur la frise a précédence)
+      // Si le bouton radio 'epoque' était coché, on décoche (le clic sur la frise a précédence)
       if ($('#epoque').is(':checked')) {
         $('#epoque').prop('checked', false);
-        $('#submit').prop('disabled', true);
+        $(':button').prop('disabled', true);
       }
       listMonuments(lieu, epoque, categorie, type, recherche, offset);
-      $('#etiquet-frises').text(nom_epoque);
+      $('#etiquet-frises').html(nom_epoque + '<span id="nom-cat"> ' + nom_categorie + '</span>');
     })
 
 
@@ -135,11 +146,25 @@ $(document).ready(function() {
 
     $('#friseCat').on('click','path',function(){
       offset = 0;
-      epoque += '<li>'+$(this).attr('id')+'</li>';
-      $(this).css('fill', '#7D9EA5');
+      // même traitement que les époques
+      if ((categorie != '') && (!$(this).hasClass('coche') )) {
+        nom_categorie += ' ; ' + $(this).attr('id');
+        categorie += ';' + $(this).attr('name');
+      } else if ($(this).hasClass('coche')) {
+        categorie = categorie.replace($(this).attr('name'), '');
+        categorie = categorie.replace(/^;|;$/, '');
+        categorie = categorie.replace(/;;/, ';');
+        nom_categorie = nom_categorie.replace($(this).attr('id'), '');
+        nom_categorie = nom_categorie.replace(/^( ; )|( ; )$/, '');
+        nom_categorie = nom_categorie.replace(/( ;  ; )/, ' ; ');
+      } else {
+        nom_categorie = $(this).attr('id');
+        categorie = $(this).attr('name');
+      }
+      $(this).toggleClass('coche');
       if ($('#type').is(':checked')) { $('#type').prop('checked', false); }
       listMonuments(lieu, epoque, categorie, type, recherche, offset);
-      $('#frise').text(categorie);
+      $('#etiquet-frises').html(nom_epoque + '<span id="nom-cat"> ' + nom_categorie + '</span>');
     });
 
 
@@ -147,15 +172,50 @@ $(document).ready(function() {
 //////// //////// //////// //////// /////////
 ////////////// CHAMP SEARCH \\\\\\\\\\\\\\\\\
 //\\\\\\ \\\\\\\\ \\\\\\\\ \\\\\\\\ \\\\\\\\\
+    $(':radio').click(function() {
+      $(':button').prop('disabled', false);
+    })
     $(':button').click(function() {
-      if ( ($(':checked')) && $('#recherche').val() != '' ) {
+      verifSearchType()
+    })
+    // Sur touche entrée alors que bouton est sélectionné
+    $(document).keypress(function(e) {
+      offset = 0;
+      if (e.which == 13) {
+        verifSearchType()
+      }
+    });
+
+    function verifSearchType() {
+      // !!$(selector) est vrai si non vide et non undefined (rien de ce que j'ai essayé auparavant n'a marché)
+      // bon vu que
+      if ( (!!$(':radio:checked').val()) && $('#recherche').val() != '' ) {
+        type = $(':radio:checked').val();
         recherche = $('#recherche').val();
-        type = $(':checked').val();
-        // alert(type + " " + recherche)
+        offset = 0;
         listMonuments(lieu, epoque, categorie, type, recherche, offset);
       }
-    })
+      else {
+        $('#recherche').css('box-shadow', '1px 1px 2px #901826;')
+        $(':radio').css('box-shadow', '1px 1px 2px #901826;')
+      }
+    }
+    // Sur clic des radio buttons : indications via placeholder
 
+      // "par époque"
+      $('#epoque').change(function() {
+        $('#recherche').attr('placeholder', '12');
+      })
+
+      // "par commune"
+      $('#commune').change(function() {
+        $('#recherche').attr('placeholder', 'st andre');
+      })
+
+      // "par nom"
+      $('#nom').change(function() {
+        $('#recherche').attr('placeholder', 'tour eiffel');
+      })
 
 //////// //////// //////// //////// /////////
 //////////////// RESULTAT \\\\\\\\\\\\\\\\\\\
@@ -163,6 +223,7 @@ $(document).ready(function() {
 
 function listMonuments(lieu, epoque, categorie, type, recherche, offset) {
 
+    console.log("lieu:" + lieu + " époque:" + epoque + " catégorie:" + categorie + " type:" + type + " recherche:" + recherche + " offset:" + offset)
     // On définit la requête
     if (window.XMLHttpRequest) {
             // code for IE7+, Firefox, Chrome, Opera, Safari

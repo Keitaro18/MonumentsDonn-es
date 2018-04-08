@@ -29,17 +29,18 @@ body {
         /* ------------------ */
         /* -- -- frises -- -- */
         /* ------------------ */
-        #chrono {
-          width: 100%;
-        }
         .texte {
           fill: #fff;
         }
-        #chronoFrise, #friseCat {
+        #chronoFrise {
           width: 100%;
           height: auto;
+          cursor: pointer;
         }
         #friseCat {
+          height: 4vw;
+          width: auto;
+          cursor: pointer;
           -webkit-animation: noir 3s;  /* Safari 4.0 - 8.0 */
           animation: noir 3s;
         }
@@ -59,10 +60,21 @@ body {
               #friseCat a:hover, path:hover, .temple:hover {
                 fill:#901826;
               }
-        #trait {
-          stroke: #000;
-          pointer-events: none;
+
+        #etiquet-frises {
+            height: 1.5vw;
+            width: 96%;
+            font-size: 1vw;
+            text-align: center;
+            margin: 0 5%;
+            background-image: linear-gradient(to bottom, rgba(125, 158, 165, 1), rgba(125, 158, 165, 0));
+            border-top: 3px solid black;
         }
+
+            #nom-cat {
+              font-variant: small-caps;
+              color: #901826;
+            }
 
         #frise {
           font-size: 1vw;
@@ -147,6 +159,12 @@ main {
             flex:4;
           }
 
+                em {
+                  font-weight: 200;
+                  font-style: normal;
+                  font-family: 'Redressed';
+                }
+
           .ligne>p:nth-child(2) {
             font-size: 0.9vw;
             flex:11;
@@ -206,10 +224,6 @@ main {
         #precedent { left: 0; }
 
 
-  #chronofrise, #friseCat {
-    cursor: pointer;
-  }
-
 
 /* ---- ----- Légendes des époques ---- ----- */
 /* ------- texte blanc sur chronoFrise ------ */
@@ -225,10 +239,10 @@ main {
     on ignore cette couche pour les événements souris */
   }
 
-  header span {
-    text-align: center;
-    color: #fff;
-  }
+      #legendes span {
+        text-align: center;
+        color: #fff;
+      }
 
   /* Préhistoire */
   #pre {
@@ -274,15 +288,6 @@ main {
       font-size: 2.6vw;
       margin-left: 2.5vw;
   }
-
-#etiquet-frises {
-    height: 1.5vw;
-    width: 100%;
-    font-size: 1vw;
-    text-align: center;
-    margin: 0 5%;
-    background-image: linear-gradient(to bottom, rgba(125, 158, 165, 1), rgba(125, 158, 165, 0));
-}
 
 .coche {
   fill: #7D9EA5;

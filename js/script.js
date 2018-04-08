@@ -68,11 +68,7 @@ function showMap(lieu) {
       //   carte = $('#map svg').attr("src")
       //   $('#map').load(carte)
       // }
-      // else
       $('#map').load('img/map.svg')
-      $('#etiquet-fix').hide()
-      $('#listMonuments').html('')
-      if (!($('#commune').is(':checked'))) lieu = ''
       break;
     default:
       niveau = 2;

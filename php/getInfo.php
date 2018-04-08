@@ -1,3 +1,6 @@
+<!-- GoogleImage by Alexis -->
+<!--  -->
+
 <?php
 
 class Info {
