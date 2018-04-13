@@ -10,4 +10,10 @@ catch (PDOException $e)
         die('Erreur : ' . $e->getMessage());
 }
 
+
+// $conn = mysqli_connect('localhost','Dev','luwasx18500','Monu');
+// if (!$conn) {
+//     die('Could not connect: ' . mysqli_error($conn));
+// }
+
 ?>
